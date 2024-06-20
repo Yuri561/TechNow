@@ -41,7 +41,7 @@ const NewWorkOrderForm: React.FC = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:3001/api/workorders', newOrder);
+      const response = await axios.post('http://localhost:5000/api/workorders', newOrder);
       console.log('work order has been created', response.data);
       navigate('/work-request');
     } catch (error) {

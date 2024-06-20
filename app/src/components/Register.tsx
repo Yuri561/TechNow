@@ -15,7 +15,7 @@ const Register: React.FC = () => {
     setLoading(true);
     setError('');
     try {
-      const result = await axios.post('http://localhost:3001/register', { username, pin });
+      const result = await axios.post('http://localhost:5000/api/register', { username, pin });
       if (result.status === 201) {
         console.log('User successfully created');
         navigate('/login');
@@ -24,7 +24,7 @@ const Register: React.FC = () => {
       }
     } catch (error: any) {
       if (axios.isAxiosError(error) && error.response) {
-        setError(error.response.data);
+        setError(error.response.data.message || 'An error occurred during registration.');
       } else {
         setError('Registration error. Please try again.');
       }

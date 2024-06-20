@@ -11,7 +11,7 @@ const WorkRequest: React.FC = () => {
   const fetchWorkOrders = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:3001/api/workorders');
+      const response = await axios.get('http://localhost:5000/api/workorders');
       setWorkEntries(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error('Error fetching work orders:', error);
@@ -22,7 +22,7 @@ const WorkRequest: React.FC = () => {
   const deleteWorkOrder = async (id: string) => {
     setLoading(true);
     try {
-      await axios.delete(`http://localhost:3001/api/workorders/${id}`);
+      await axios.delete(`http://localhost:5000/api/workorders/${id}`);
       fetchWorkOrders(); // Refresh the list after deletion
     } catch (error) {
       console.error('Error deleting work order:', error);
