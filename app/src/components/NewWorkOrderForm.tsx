@@ -53,11 +53,15 @@ const NewWorkOrderForm: React.FC = () => {
   };
 
   const handleNext = () => {
-    setCurrentSection((prev) => (prev + 1) % sections.length);
+    if (currentSection < sections.length - 1) {
+      setCurrentSection((prev) => (prev + 1) % sections.length);
+    }
   };
 
   const handlePrev = () => {
-    setCurrentSection((prev) => (prev - 1 + sections.length) % sections.length);
+    if (currentSection > 0) {
+      setCurrentSection((prev) => (prev - 1 + sections.length) % sections.length);
+    }
   };
 
   const sections = [
@@ -161,7 +165,7 @@ const NewWorkOrderForm: React.FC = () => {
           <h3 className="text-xl font-semibold mb-4">{sections[currentSection].title}</h3>
           {sections[currentSection].content}
           {error && <p className="text-red-500">{error}</p>}
-          <div className="flex justify-between w-full mt-4" data-aos="fade-up" data-aos-delay="200">
+          <div className="flex justify-between w-full mt-4" >
             <button type="button" onClick={handlePrev} className="bg-gray-500 text-white py-2 px-4 rounded-2xl hover:bg-gray-700 transition duration-300 shadow">
               &larr;
             </button>
