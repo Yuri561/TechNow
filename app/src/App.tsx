@@ -17,9 +17,6 @@ import Loading from './components/Loading';
 import GenerateReceipt from './components/GenerateReceipt';
 import { ThemeModifier } from './components/ThemeModifier'; // Ensure this path is correct
 
-
-// Use ThemeModifier as a component in your application
-
 import './App.css';
 
 const App: React.FC = () => {
@@ -32,7 +29,6 @@ const App: React.FC = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  
   useEffect(() => {
     const username = localStorage.getItem('username');
     if (username) {
@@ -44,67 +40,95 @@ const App: React.FC = () => {
 
   return (
     <ThemeModifier defaultTheme="dark" storageKey="vite-ui-theme">
-
-    <Router>
-      <div className="app-container">
-        <Header className="navbar" />
-        <Sidebar className="sidebar" isAuthenticated={isAuthenticated} />
-        <div className="main-content h-full w-full bg-gray-900">
-          {loading && <Loading />}
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
-            <Route path="/register" element={<Register setIsAuthenticated={setIsAuthenticated} />} />
-            <Route path="/work-request" element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <WorkRequest />
-              </ProtectedRoute>
-            } />
-            <Route path="/time-review" element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <TimeReview />
-              </ProtectedRoute>
-            } />
-            <Route path="/tool-box" element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <ToolBox />
-              </ProtectedRoute>
-            } />
-            <Route path="/new-work-order-form" element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <NewWorkOrderForm addWorkOrder={() => {}} />
-              </ProtectedRoute>
-            } />
-            <Route path="/docs-upload" element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <DocsUpload />
-              </ProtectedRoute>
-            } />
-            <Route path="/work-requests" element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <div>Work Request Info</div>
-              </ProtectedRoute>
-            } />
-            <Route path="/equipment" element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <Equipment />
-              </ProtectedRoute>
-            } />
-            <Route path="/generate-receipt" element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <GenerateReceipt />
-              </ProtectedRoute>
-            } />
-            <Route path="/notes" element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <Notes />
-              </ProtectedRoute>
-            } />
-          </Routes>
+      <Router>
+        <div className="app-container">
+          <Header className="navbar" />
+          <Sidebar className="sidebar" isAuthenticated={isAuthenticated} />
+          <div className="main-content h-full w-full bg-gray-900">
+            {loading ? (
+              <Loading />
+            ) : (
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+                <Route path="/register" element={<Register setIsAuthenticated={setIsAuthenticated} />} />
+                <Route
+                  path="/work-request"
+                  element={
+                    <ProtectedRoute isAuthenticated={isAuthenticated}>
+                      <WorkRequest />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/time-review"
+                  element={
+                    <ProtectedRoute isAuthenticated={isAuthenticated}>
+                      <TimeReview />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/tool-box"
+                  element={
+                    <ProtectedRoute isAuthenticated={isAuthenticated}>
+                      <ToolBox />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/new-work-order-form"
+                  element={
+                    <ProtectedRoute isAuthenticated={isAuthenticated}>
+                      <NewWorkOrderForm />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/docs-upload"
+                  element={
+                    <ProtectedRoute isAuthenticated={isAuthenticated}>
+                      <DocsUpload />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/work-requests"
+                  element={
+                    <ProtectedRoute isAuthenticated={isAuthenticated}>
+                      <div>Work Request Info</div>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/equipment"
+                  element={
+                    <ProtectedRoute isAuthenticated={isAuthenticated}>
+                      <Equipment />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/generate-receipt"
+                  element={
+                    <ProtectedRoute isAuthenticated={isAuthenticated}>
+                      <GenerateReceipt />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/notes"
+                  element={
+                    <ProtectedRoute isAuthenticated={isAuthenticated}>
+                      <Notes />
+                    </ProtectedRoute>
+                  }
+                />
+              </Routes>
+            )}
+          </div>
         </div>
-      </div>
-    </Router>
-
+      </Router>
     </ThemeModifier>
   );
 };

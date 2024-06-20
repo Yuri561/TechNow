@@ -9,7 +9,15 @@ import 'flowbite';
 import ChatModal from './ChatModal'; // Import the modal component
 import Ivr from './Ivr';
 
-const members = [
+interface Member {
+  name: string;
+  email: string;
+  phone: string;
+  image: string;
+  bgColor: string;
+}
+
+const members: Member[] = [
   { name: 'Dispatcher', email: 'dispatcher@example.com', phone: '123-456-7890', image: './images/dispatch.jpeg', bgColor: 'bg-red-500' },
   { name: 'Purchasing Department', email: 'purchasing@example.com', phone: '123-456-7891', image: './images/purchasing.png', bgColor: 'bg-green-500' },
   { name: 'Area Manager', email: 'areamanager@example.com', phone: '123-456-7892', image: './images/area.jpg', bgColor: 'bg-blue-500' },
@@ -21,7 +29,7 @@ const members = [
   { name: 'Operations Manager', email: 'operations@example.com', phone: '123-456-7896', image: 'https://via.placeholder.com/150?text=Operations+Manager', bgColor: 'bg-indigo-500' },
 ];
 
-const chartOptions = {
+const chartOptions: ApexCharts.ApexOptions = {
   chart: {
     type: 'bar',
     height: 350,
@@ -36,7 +44,7 @@ const chartOptions = {
         pan: true,
         reset: true
       },
-      background: 'black'  // Set the background color of the toolbar to black
+      background: 'black'
     },
     foreColor: 'black'
   },
@@ -91,7 +99,7 @@ const chartOptions = {
     theme: 'dark',
     y: {
       formatter: function (val) {
-        return val;
+        return val.toString();
       }
     }
   },
@@ -104,7 +112,7 @@ const chartOptions = {
   }
 };
 
-const chartSeries = [
+const chartSeries: ApexCharts.ApexOptions['series'] = [
   {
     name: 'Tasks',
     data: [44, 55, 41, 37, 22, 43, 26]
@@ -112,11 +120,11 @@ const chartSeries = [
 ];
 
 const Home: React.FC = () => {
-  const [selectedMember, setSelectedMember] = useState(null);
+  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [isClockedIn, setIsClockedIn] = useState<boolean>(false);
   const [weather, setWeather] = useState<any>('');
   const [isChatModalOpen, setIsChatModalOpen] = useState<boolean>(false);
-  const [isIvrModalOpen, setIsIvrModalOpen] = useState<boolean>(false); // State to manage IVR modal
+  const [isIvrModalOpen, setIsIvrModalOpen] = useState<boolean>(false);
 
   const toggleClockedIn = () => {
     setIsClockedIn(prevState => !prevState);
@@ -135,7 +143,7 @@ const Home: React.FC = () => {
         method: 'GET',
         url: 'https://open-weather13.p.rapidapi.com/city/fayetteville/EN',
         headers: {
-          'x-rapidapi-key': 'aa89a9475fmsh2519ad607bf8a07p11e955jsnb24308fff616',
+          'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
           'x-rapidapi-host': 'open-weather13.p.rapidapi.com'
         }
       };
@@ -169,7 +177,7 @@ const Home: React.FC = () => {
               <p className="text-sm md:text-lg text-white">
                 Welcome Home! The air quality is good & fresh. You can go out today.
                 <span className="block mt-2 text-xs md:text-sm text-white">
-                  {weather.main.temp} Outdoor temperature - Fuzzy cloudy weather
+                  {weather.main.temp}°F - Fuzzy cloudy weather
                 </span>
               </p>
             )}
