@@ -6,8 +6,8 @@ const {
 	deleteVideo,
 } = require('../controllers/videoController');
 
-router.get('/workorders', getVideos);
-router.post('/workorders', createVideo);
-router.delete('/workorders/:id', deleteVideo); // Ensure the route includes ':id'
+router.get('/video', getVideos);
+router.post('/video', createVideo);
+router.delete('/video/:id', deleteVideo); // Ensure the route includes ':id'
 
 module.exports = router;

@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const EmployeesSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true }, // Make username unique
   pin: { type: String, required: true },
+  role: { type: String, required: true, default: 'employee' },
 });
 
 EmployeesSchema.pre('save', async function (next) {

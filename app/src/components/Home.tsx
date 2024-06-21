@@ -6,7 +6,7 @@ import { faUsers, faLightbulb, faTemperatureHigh, faCar, faComments, faTint } fr
 import Chart from 'react-apexcharts';
 import axios from 'axios';
 import 'flowbite';
-import ChatModal from './ChatModal'; // Import the modal component
+import ChatModal from './ChatModal';
 import Ivr from './Ivr';
 import './styles/Home.css';
 
@@ -16,6 +16,12 @@ interface Member {
   phone: string;
   image: string;
   bgColor: string;
+}
+
+interface Employee {
+  _id: string;
+  username: string;
+  role: string;
 }
 
 const members: Member[] = [
@@ -117,19 +123,37 @@ const chartSeries: ApexCharts.ApexOptions['series'] = [
 const Home: React.FC = () => {
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [isClockedIn, setIsClockedIn] = useState<boolean>(false);
+  const [elapsedTime, setElapsedTime] = useState<number>(0);
+  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+  const [newRole, setNewRole] = useState<string>('');
+  const [isChatModalOpen, setIsChatModalOpen] = useState<boolean>(false);
+  const [isIvrModalOpen, setIsIvrModalOpen] = useState<boolean>(false);
+  
+  const role = localStorage.getItem('role') || 'employee'; // Default to 'employee' if role is undefined
   interface WeatherData {
     main: {
       temp: number;
       humidity: number;
     };
   }
-  
+
   const [weather, setWeather] = useState<WeatherData>({ main: { temp: 0, humidity: 0 } });
-  const [isChatModalOpen, setIsChatModalOpen] = useState<boolean>(false);
-  const [isIvrModalOpen, setIsIvrModalOpen] = useState<boolean>(false);
 
   const toggleClockedIn = () => {
     setIsClockedIn(prevState => !prevState);
+    if (!isClockedIn) {
+      const id = setInterval(() => {
+        setElapsedTime(prevTime => prevTime + 1);
+      }, 1000);
+      setIntervalId(id);
+    } else {
+      if (intervalId) {
+        clearInterval(intervalId);
+        setIntervalId(null);
+      }
+    }
   };
 
   useEffect(() => {
@@ -161,8 +185,48 @@ const Home: React.FC = () => {
     fetchWeather();
   }, []);
 
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const response = await axios.get('/api/employees');
+        console.log('Fetched employees:', response.data); // Debug log
+        setEmployees(response.data);
+      } catch (error) {
+        console.error('Error fetching employees:', error);
+      }
+    };
+
+    fetchEmployees();
+  }, []);
+
+  const handleRoleUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (selectedEmployee && newRole) {
+      try {
+        await axios.put(`/api/employees/${selectedEmployee._id}`, { role: newRole });
+        setEmployees(prevEmployees =>
+          prevEmployees.map(emp =>
+            emp._id === selectedEmployee._id ? { ...emp, role: newRole } : emp
+          )
+        );
+        setSelectedEmployee(null);
+        setNewRole('');
+      } catch (error) {
+        console.error('Error updating role:', error);
+      }
+    }
+  };
+
+  const formatElapsedTime = (seconds: number) => {
+    const hrs = Math.floor(seconds / 3600).toString().padStart(2, '0');
+    const mins = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+    const secs = (seconds % 60).toString().padStart(2, '0');
+    return `${hrs}:${mins}:${secs}`;
+  };
+
   const username = localStorage.getItem('username') || 'User';
-  const currentTime = new Date().toLocaleTimeString();
+
+  console.log('Logged in as:', username, 'with role:', role); // Debug log
 
   return (
     <div className="flex h-screen w-full bg-gray-900 text-white">
@@ -173,7 +237,9 @@ const Home: React.FC = () => {
           <div className="bg-gray-800 p-4 md:p-6 rounded">
             <div className="flex justify-between items-center">
               <h1 className="text-xl md:text-3xl text-white">Hi, {username}!</h1>
-              <span className="text-xl md:text-2xl text-white">{currentTime}</span>
+              <span className={`text-xl md:text-2xl ${isClockedIn ? 'text-red-500' : 'text-white'}`}>
+                {isClockedIn ? formatElapsedTime(elapsedTime) : new Date().toLocaleTimeString()}
+              </span>
             </div>
             {weather && weather.main && (
               <p className="text-sm md:text-lg text-white">
@@ -188,13 +254,45 @@ const Home: React.FC = () => {
 
         {/* Control Panels */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 rounded">
-          <div className="bg-gray-800 p-4 rounded" data-aos="fade-up">
-            <h2 className="text-lg md:text-xl mb-2 flex items-center text-white"><FontAwesomeIcon icon={faCar} className="mr-2" />Travel</h2>
-            <div className="flex items-center justify-between">
-              <span className="text-white">{isClockedIn ? 'Travel' : 'Home'}</span>
-              <button className="bg-blue-500 p-2 rounded text-white" onClick={toggleClockedIn}>Toggle</button>
+          {role === 'admin' ? (
+            <div className="bg-gray-800 p-4 rounded" data-aos="fade-up">
+              <h2 className="text-lg md:text-xl mb-2 flex items-center text-white"><FontAwesomeIcon icon={faUsers} className="mr-2" />Manage Roles</h2>
+              <div className="flex flex-col">
+                <select
+                  onChange={(e) => setSelectedEmployee(employees.find(emp => emp._id === e.target.value) || null)}
+                  className="bg-gray-700 text-white p-2 rounded mb-4"
+                  value={selectedEmployee ? selectedEmployee._id : ''}
+                >
+                  <option value="">Select Employee</option>
+                  {employees.map(emp => (
+                    <option key={emp._id} value={emp._id}>
+                      {emp.username} - {emp.role}
+                    </option>
+                  ))}
+                </select>
+                {selectedEmployee && (
+                  <form onSubmit={handleRoleUpdate} className="flex flex-col">
+                    <label className="text-white mb-2">New Role:</label>
+                    <input
+                      type="text"
+                      value={newRole}
+                      onChange={(e) => setNewRole(e.target.value)}
+                      className="mb-4 p-2 rounded bg-gray-700 text-white"
+                    />
+                    <button type="submit" className="bg-blue-500 p-2 rounded text-white">Update Role</button>
+                  </form>
+                )}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="bg-gray-800 p-4 rounded" data-aos="fade-up">
+              <h2 className="text-lg md:text-xl mb-2 flex items-center text-white"><FontAwesomeIcon icon={faCar} className="mr-2" />Travel</h2>
+              <div className="flex items-center justify-between">
+                <span className="text-white">{isClockedIn ? 'Travel' : 'Home'}</span>
+                <button className="bg-blue-500 p-2 rounded text-white" onClick={toggleClockedIn}>Toggle</button>
+              </div>
+            </div>
+          )}
           <div className="bg-gray-800 p-4 rounded" data-aos="fade-up" data-aos-delay="100">
             <h2 className="text-lg md:text-xl mb-2 flex items-center text-white"><FontAwesomeIcon icon={faTemperatureHigh} className="mr-2" />Temperature</h2>
             <div className="flex flex-col items-start rounded">

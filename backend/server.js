@@ -4,7 +4,10 @@ const mongoose = require('mongoose');
 require('dotenv').config();  // This line loads environment variables from .env file
 
 const employeeRoutes = require('./routes/employeeRoute');
+
 const workOrderRoutes = require('./routes/workOrderRoute');
+const videoRoutes = require('./routes/videoRoute');
+const quizRoutes = require('./routes/quizRoute');
 
 const app = express();
 
@@ -15,6 +18,8 @@ app.use(express.json());
 // Routes
 app.use('/api', employeeRoutes);
 app.use('/api', workOrderRoutes);
+app.use('/api', videoRoutes);
+app.use('/api', quizRoutes);
 
 // MongoDB Connection
 const uri = 'mongodb+srv://yui561:Houbenove561%24@cluster0.c3jn9rd.mongodb.net/CompanyDB?retryWrites=true&w=majority&appName=Cluster0';

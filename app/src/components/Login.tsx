@@ -24,11 +24,12 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
         console.log('User successfully authenticated');
         setIsAuthenticated(true);
         localStorage.setItem('username', username);
+        localStorage.setItem('role', result.data.role); // retrieve the role from the login data
         navigate('/');
       } else {
         setError('Incorrect PIN. Please try again.');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (axios.isAxiosError(error) && error.response) {
         setError(error.response.data);
       } else {
