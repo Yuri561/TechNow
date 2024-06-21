@@ -22,7 +22,7 @@ const NewWorkOrderForm: React.FC = () => {
 
   const [currentSection, setCurrentSection] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string>('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -46,7 +46,6 @@ const NewWorkOrderForm: React.FC = () => {
       navigate('/work-request');
     } catch (error) {
       console.error('Error creating work order:', error);
-      setError(error.response?.data?.details || 'Unknown error occurred');
     } finally {
       setLoading(false);
     }
@@ -176,7 +175,7 @@ const NewWorkOrderForm: React.FC = () => {
           {currentSection === sections.length - 1 && (
             <button type="submit" className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-2xl hover:bg-blue-700 transition duration-300 shadow">
               {loading ? (
-                <div className="w-full bg-gray-700 rounded-full h-4 mb-4">
+                <div className="w-full bg-gray-800 rounded-full h-4 mb-4">
                   <div className="bg-blue-500 h-4 rounded-full animate-progress-bar"></div>
                 </div>
               ) : (

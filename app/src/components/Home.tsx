@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTachometerAlt, faTasks, faTools, faUsers, faLightbulb, faTemperatureHigh, faCar, faComments, faTint } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faLightbulb, faTemperatureHigh, faCar, faComments, faTint } from '@fortawesome/free-solid-svg-icons';
 import Chart from 'react-apexcharts';
 import axios from 'axios';
 import 'flowbite';
 import ChatModal from './ChatModal'; // Import the modal component
 import Ivr from './Ivr';
+import './styles/Home.css';
 
 interface Member {
   name: string;
@@ -44,21 +45,15 @@ const chartOptions: ApexCharts.ApexOptions = {
         pan: true,
         reset: true
       },
-      background: 'black'
     },
-    foreColor: 'black'
+    foreColor: '#000'
   },
   plotOptions: {
     bar: {
       horizontal: false,
       columnWidth: '55%',
-      endingShape: 'rounded',
       colors: {
         backgroundBarOpacity: 1,
-        hover: {
-          backgroundColor: '#444',
-          borderColor: '#555'
-        }
       }
     }
   },
@@ -122,7 +117,14 @@ const chartSeries: ApexCharts.ApexOptions['series'] = [
 const Home: React.FC = () => {
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [isClockedIn, setIsClockedIn] = useState<boolean>(false);
-  const [weather, setWeather] = useState<any>('');
+  interface WeatherData {
+    main: {
+      temp: number;
+      humidity: number;
+    };
+  }
+  
+  const [weather, setWeather] = useState<WeatherData>({ main: { temp: 0, humidity: 0 } });
   const [isChatModalOpen, setIsChatModalOpen] = useState<boolean>(false);
   const [isIvrModalOpen, setIsIvrModalOpen] = useState<boolean>(false);
 
