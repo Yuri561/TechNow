@@ -20,10 +20,10 @@ const WorkRequest: React.FC = () => {
     setLoading(false);
   };
 
-  const deleteWorkOrder = async (id: string) => {
+  const deleteWorkOrder = async (_id: string) => {
     setLoading(true);
     try {
-      await axios.delete(`http://localhost:5000/api/workorders/${id}`);
+      await axios.delete(`http://localhost:5000/api/workorders/${_id}`);
       fetchWorkOrders(); // Refresh the list after deletion
     } catch (error) {
       console.error('Error deleting work order:', error);
@@ -90,7 +90,7 @@ const WorkRequest: React.FC = () => {
                       <button className="button bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">Edit</button>
                     </td>
                     <td className="p-3">
-                      <button className="button bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700" onClick={() => deleteWorkOrder(entry._id)}>Delete</button>
+                      <button className="button bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700" onClick={() => deleteWorkOrder(entry.Id)}>Delete</button>
                     </td>
                   </tr>
                 ))}

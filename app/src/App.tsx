@@ -42,16 +42,16 @@ const App: React.FC = () => {
     <ThemeModifier defaultTheme="dark" storageKey="vite-ui-theme">
       <Router>
         <div className="app-container">
-          <Header className="navbar" />
-          <Sidebar className="sidebar" isAuthenticated={isAuthenticated} />
+          <Header />
+          <Sidebar isAuthenticated={isAuthenticated} />
           <div className="main-content h-full w-full bg-gray-900">
             {loading ? (
               <Loading />
             ) : (
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
-                <Route path="/register" element={<Register setIsAuthenticated={setIsAuthenticated} />} />
+                <Route path="/login" element={<React.Fragment><Login setIsAuthenticated={setIsAuthenticated} /></React.Fragment>} />
+                <Route path="/register" element={<React.Fragment><Register setIsAuthenticated={setIsAuthenticated} /></React.Fragment>} />
                 <Route
                   path="/work-request"
                   element={

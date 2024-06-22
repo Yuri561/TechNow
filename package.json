@@ -5,10 +5,10 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server",
-    "client": "npm start --prefix client",
-    "build": "npm run build --prefix client",
-    "deploy": "npm run build && gh-pages -d client/build",
-    "predeploy": "npm install --prefix client"
+    "client": "npm start --prefix app",
+    "build": "npm run build --prefix app",
+    "deploy": "npm run build && gh-pages -d app/build",
+    "predeploy": "npm install --prefix app"
   },
   "repository": {
     "type": "git",

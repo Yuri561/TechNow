@@ -4,10 +4,12 @@ import axios from 'axios';
 import './styles/AddWork.css';
 import { useNavigate } from 'react-router-dom';
 
+// AUTOMATICALLY GENERATE WORKORDER ID ON FORM
+
 const NewWorkOrderForm: React.FC = () => {
   const navigate = useNavigate();
   const [formState, setFormState] = useState({
-    Id: '',
+    _id: '',
     Description: '',
     Type: '',
     NTE: '',
@@ -22,7 +24,7 @@ const NewWorkOrderForm: React.FC = () => {
 
   const [currentSection, setCurrentSection] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -33,19 +35,28 @@ const NewWorkOrderForm: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     setError('');
+
     const newOrder = {
-      ...formState,
+      _id: formState._id,
+      Description: formState.Description,
+      Type: formState.Type,
       NTE: parseFloat(formState.NTE),
+      AssignedTo: formState.AssignedTo,
+      Status: formState.Status,
       Priority: parseInt(formState.Priority),
-      Date: new Date(formState.Date)
+      Location: formState.Location,
+      Notes: formState.Notes,
+      PO: parseInt(formState.PO),
+      Date: new Date(formState.Date),
     };
 
     try {
       const response = await axios.post('http://localhost:5000/api/workorders', newOrder);
-      console.log('work order has been created', response.data);
+      console.log('Work order has been created', response.data);
       navigate('/work-request');
-    } catch (error) {
+    } catch (e) {
       console.error('Error creating work order:', error);
+      setError('Error creating work order: ' + e.message);
     } finally {
       setLoading(false);
     }
@@ -70,7 +81,7 @@ const NewWorkOrderForm: React.FC = () => {
         <>
           <label className="flex flex-col space-y-2">
             <span>Work Order Number:</span>
-            <input type="text" name="Id" value={formState.Id} onChange={handleChange} required className="p-2 bg-gray-700 rounded-lg"/>
+            <input type="text" name="Id" value={formState._id} onChange={handleChange} required className="p-2 bg-gray-700 rounded-lg"/>
           </label>
           <label className="flex flex-col space-y-2">
             <span>Description:</span>

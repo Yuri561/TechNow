@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faLightbulb, faTemperatureHigh, faCar, faComments, faTint } from '@fortawesome/free-solid-svg-icons';
 import Chart from 'react-apexcharts';
@@ -9,6 +7,7 @@ import 'flowbite';
 import ChatModal from './ChatModal';
 import Ivr from './Ivr';
 import './styles/Home.css';
+
 
 interface Member {
   name: string;
@@ -130,6 +129,7 @@ const Home: React.FC = () => {
   const [newRole, setNewRole] = useState<string>('');
   const [isChatModalOpen, setIsChatModalOpen] = useState<boolean>(false);
   const [isIvrModalOpen, setIsIvrModalOpen] = useState<boolean>(false);
+
   
   const role = localStorage.getItem('role') || 'employee'; // Default to 'employee' if role is undefined
   interface WeatherData {
@@ -156,41 +156,38 @@ const Home: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-    });
-  }, []);
 
-  useEffect(() => {
-    const fetchWeather = async () => {
-      const options = {
-        method: 'GET',
-        url: 'https://open-weather13.p.rapidapi.com/city/fayetteville/EN',
-        headers: {
-          'x-rapidapi-key': process.env.REACT_APP_RAPIDAPI_KEY,
-          'x-rapidapi-host': 'open-weather13.p.rapidapi.com'
-        }
-      };
-
-      try {
-        const response = await axios.request(options);
-        setWeather(response.data);
-      } catch (error) {
-        console.error('Error fetching weather data:', error);
+useEffect(() => {
+  const fetchWeather = async () => {
+    try {
+      const apiKey = "897cb7af93dc77cc8639d0935e34a4d6";
+      console.log(import.meta.env.VITE_OPENWEATHERMAP_API_KEY);
+      if (!apiKey) {
+        throw new Error('OpenWeatherMap API key is not defined');
       }
-    };
+    
+      console.log('API Key:', apiKey); // Check if API key is loaded correctly
+      const city = 'Fayetteville';
+      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
 
-    fetchWeather();
-  }, []);
+      const response = await axios.get(apiUrl);
+      setWeather(response.data);
+      console.log(response.data); // Debug log
+    } catch (error) {
+      console.error('Error fetching weather:', error);
+    }
+  };
+
+  fetchWeather();
+}, []);
+
 
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
         const response = await axios.get('/api/employees');
         console.log('Fetched employees:', response.data); // Debug log
-        setEmployees(response.data);
+        setEmployees(response.data.main);
       } catch (error) {
         console.error('Error fetching employees:', error);
       }
@@ -233,7 +230,7 @@ const Home: React.FC = () => {
       {/* Main Content */}
       <main className="flex-grow p-2 md:p-6 overflow-auto rounded">
         {/* Welcome Section */}
-        <section className="mb-6 rounded" data-aos="fade-up">
+        <section className="mb-6 rounded">
           <div className="bg-gray-800 p-4 md:p-6 rounded">
             <div className="flex justify-between items-center">
               <h1 className="text-xl md:text-3xl text-white">Hi, {username}!</h1>
@@ -255,7 +252,7 @@ const Home: React.FC = () => {
         {/* Control Panels */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 rounded">
           {role === 'admin' ? (
-            <div className="bg-gray-800 p-4 rounded" data-aos="fade-up">
+            <div className="bg-gray-800 p-4 rounded">
               <h2 className="text-lg md:text-xl mb-2 flex items-center text-white"><FontAwesomeIcon icon={faUsers} className="mr-2" />Manage Roles</h2>
               <div className="flex flex-col">
                 <select
@@ -285,7 +282,7 @@ const Home: React.FC = () => {
               </div>
             </div>
           ) : (
-            <div className="bg-gray-800 p-4 rounded" data-aos="fade-up">
+            <div className="bg-gray-800 p-4 rounded">
               <h2 className="text-lg md:text-xl mb-2 flex items-center text-white"><FontAwesomeIcon icon={faCar} className="mr-2" />Travel</h2>
               <div className="flex items-center justify-between">
                 <span className="text-white">{isClockedIn ? 'Travel' : 'Home'}</span>
@@ -293,7 +290,7 @@ const Home: React.FC = () => {
               </div>
             </div>
           )}
-          <div className="bg-gray-800 p-4 rounded" data-aos="fade-up" data-aos-delay="100">
+          <div className="bg-gray-800 p-4 rounded">
             <h2 className="text-lg md:text-xl mb-2 flex items-center text-white"><FontAwesomeIcon icon={faTemperatureHigh} className="mr-2" />Temperature</h2>
             <div className="flex flex-col items-start rounded">
               <div className="flex items-center mb-2">
@@ -306,14 +303,14 @@ const Home: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="bg-gray-800 p-4 rounded" data-aos="fade-up" data-aos-delay="200">
+          <div className="bg-gray-800 p-4 rounded">
             <h2 className="text-lg md:text-xl mb-2 flex items-center text-white"><FontAwesomeIcon icon={faComments} className="mr-2" />Tech Support</h2>
             <div className="flex items-center justify-between">
               <span className="text-white">OFF</span>
               <button className="bg-blue-500 p-2 rounded text-white" onClick={() => setIsChatModalOpen(true)}>Chat</button>
             </div>
           </div>
-          <div className="bg-gray-800 p-4 rounded" data-aos="fade-up" data-aos-delay="300">
+          <div className="bg-gray-800 p-4 rounded">
             <h2 className="text-lg md:text-xl mb-2 flex items-center text-white"><FontAwesomeIcon icon={faLightbulb} className="mr-2" />Service Channel</h2>
             <div className="flex items-center justify-between">
               <button

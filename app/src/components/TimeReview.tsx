@@ -18,7 +18,7 @@ const TimeReview: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="time-review p-8 w-screen h-screen rounded bg-gray-900 text-white rounded flex flex-col items-center"
+      className="time-review p-8 w-screen h-screen rounded bg-gray-900 text-white flex flex-col items-center"
     >
       <header className="page-header w-full max-w-5xl mb-6 bg-gray-800 p-4 rounded-lg flex justify-between items-center">
         <h2 className="text-2xl font-semibold">
@@ -27,12 +27,12 @@ const TimeReview: React.FC = () => {
         </h2>
         <div className="user-info text-lg">Welcome, {username}</div>
       </header>
-      <div className="time-entry-form w-full max-w-5xl bg-gray-800 p-6 rounded-lg flex flex-col items-center">
+      <div className="time-entry-form w-full max-w-5xl bg-gray-800 p-6 rounded flex flex-col items-center">
         <h3 className="text-xl font-semibold mb-6">Enter Your Time</h3>
         <div className="time-table-container w-full overflow-x-auto mb-6">
           <table className="time-table w-full text-left border-collapse">
             <thead>
-              <tr className="bg-gray-700">
+              <tr className="bg-gray-900">
                 <th className="p-3">Date</th>
                 <th className="p-3">Start Time</th>
                 <th className="p-3">End Time</th>
@@ -44,7 +44,7 @@ const TimeReview: React.FC = () => {
             </thead>
             <tbody>
               {timeEntries.map((entry, index) => (
-                <tr key={index} className="odd:bg-gray-800 even:bg-gray-700">
+                <tr key={index} className="odd:bg-gray-500 even:bg-gray-900">
                   <td className="p-3">{entry.date}</td>
                   <td className="p-3">{entry.startTime}</td>
                   <td className="p-3">{entry.endTime}</td>

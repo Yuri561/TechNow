@@ -15,7 +15,8 @@ const GenerateReceipt: React.FC = () => {
   const sigCanvas = useRef<SignatureCanvas>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type } = e.target as HTMLInputElement;
+    const checked = type === 'checkbox' ? e.target.checked : false;
     setFormState(prevState => ({ ...prevState, [name]: type === 'checkbox' ? checked : value }));
   };
 
@@ -31,7 +32,7 @@ const GenerateReceipt: React.FC = () => {
     pdf.text(`Work Order: ${formState.workOrder}`, 10, 20);
     pdf.text(`Tech Title: ${formState.techTitle}`, 10, 30);
     pdf.text(`Notes: ${formState.notes}`, 10, 40);
-    
+
     if (sigCanvas.current) {
       const imgData = sigCanvas.current.getTrimmedCanvas().toDataURL('image/png');
       pdf.addImage(imgData, 'PNG', 10, 50, 180, 80);
