@@ -51,7 +51,7 @@ const App: React.FC = () => {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<React.Fragment><Login setIsAuthenticated={setIsAuthenticated} /></React.Fragment>} />
-                <Route path="/register" element={<React.Fragment><Register setIsAuthenticated={setIsAuthenticated} /></React.Fragment>} />
+                <Route path="/register" element={<React.Fragment><Register/></React.Fragment>} />
                 <Route
                   path="/work-request"
                   element={

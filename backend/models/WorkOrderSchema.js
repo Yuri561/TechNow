@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const WorkOrderSchema = new mongoose.Schema(
 	{
 		Id: { type: String, required: true, unique: true },
@@ -17,7 +18,9 @@ const WorkOrderSchema = new mongoose.Schema(
 		PO: { type: Number, required: false },
 	},
 	{ timestamps: true }
+
 );
+
 
 const WorkOrderModel = mongoose.model('WorkOrder', WorkOrderSchema);
 

@@ -19,19 +19,20 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
     setLoading(true);
     setError('');
     try {
-      const result = await axios.post('http://localhost:5000/api/login', { username, pin }); // Ensure the URL is correct
+      const result = await axios.post('http://localhost:5000/api/login', { username, pin });
       if (result.status === 200) {
         console.log('User successfully authenticated');
         setIsAuthenticated(true);
         localStorage.setItem('username', username);
-        localStorage.setItem('role', result.data.role); // retrieve the role from the login data
+        localStorage.setItem('role', result.data.role);
         navigate('/');
       } else {
         setError('Incorrect PIN. Please try again.');
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error) && error.response) {
-        setError(error.response.data);
+        const errorMessage = error.response.data.error || 'Login error. Please try again.';
+        setError(errorMessage);
       } else {
         setError('Login error. Please try again.');
       }
