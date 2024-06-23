@@ -4,6 +4,6 @@ const { getWorkOrders, createWorkOrder, deleteWorkOrder } = require('../controll
 
 router.get('/workorders', getWorkOrders);
 router.post('/workorders', createWorkOrder);
-router.delete('/workorders/:id', deleteWorkOrder); // Ensure the route includes ':id'
+router.delete('/workorders/:cdid', deleteWorkOrder); // Ensure the route includes ':id'
 
 module.exports = router;

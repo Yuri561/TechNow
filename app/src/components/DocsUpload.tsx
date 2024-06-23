@@ -11,7 +11,7 @@ const DocsUpload: React.FC = () => {
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeInOut' }}
-      className="documents p-8 w-screen h-screen bg-gray-900 text-white flex flex-col items-center"
+      className="documents p-5 w-screen h-screen bg-gray-900 text-white flex flex-col items-center "
     >
       <header className="documents-header w-full max-w-5xl mb-6 bg-gray-800 p-4 rounded-2xl flex justify-between items-center shadow-md">
         <h2 className="text-2xl font-semibold">Document Management</h2>

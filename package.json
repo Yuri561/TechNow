@@ -4,8 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server",
-    "client": "npm start --prefix app",
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js",
+    "client": "npm run dev --prefix app",
     "build": "npm run build --prefix app",
     "deploy": "npm run build && gh-pages -d app/build",
     "predeploy": "npm install --prefix app"

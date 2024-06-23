@@ -18,7 +18,7 @@ const TimeReview: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="time-review p-8 w-screen h-screen rounded bg-gray-900 text-white flex flex-col items-center"
+      className="time-review p-8 w-screen h-screen rounded bg-gray-900 text-white flex flex-col items-center overflow-hidden"
     >
       <header className="page-header w-full max-w-5xl mb-6 bg-gray-800 p-4 rounded-lg flex justify-between items-center">
         <h2 className="text-2xl font-semibold">

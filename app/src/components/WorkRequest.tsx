@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import './styles/WorkRequest.css';
 
 const WorkRequest: React.FC = () => {
   const username = localStorage.getItem('username');
-  const [workEntries, setWorkEntries] = useState<{ Id: string, Description: string, Type: string, NTE: string, Date: string, AssignedTo: string, Status: string, Priority: string, Location: string, Notes: string, PO: string }[]>([]);
+  const [workEntries, setWorkEntries] = useState<{ _id: string, Id: string, Description: string, Type: string, NTE: string, Date: string, AssignedTo: string, Status: string, Priority: string, Location: string, Notes: string, PO: string }[]>([]);
   const [loading, setLoading] = useState(false);
 
   const fetchWorkOrders = async () => {
@@ -42,11 +42,11 @@ const WorkRequest: React.FC = () => {
       transition={{ type: 'spring', stiffness: 100 }}
       className="work-request p-10 w-full h-full bg-gray-900 text-white flex flex-col items-center"
     >
-      <header className="page-header w-full max-w-5xl mb-6 bg-gray-800 p-4 rounded flex justify-between items-center">
+      <header className="page-header w-full  mb-6 bg-gray-800 p-4 rounded flex justify-between items-center">
         <h2 className="text-2xl font-semibold">Work Request</h2>
         <div className="user-info text-lg">Welcome, {username}</div>
       </header>
-      <div className="work-entry-form w-full max-w-5xl bg-gray-800 p-6 rounded flex flex-col items-center">
+      <div className="work-entry-form w-full h-full bg-gray-800 p-6 rounded flex flex-col items-center">
         <h3 className="text-xl font-semibold mb-6">Manage Work Entries</h3>
         <div className="work-table-container w-full overflow-x-auto mb-6">
           {loading ? (
@@ -90,7 +90,7 @@ const WorkRequest: React.FC = () => {
                       <button className="button bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700">Edit</button>
                     </td>
                     <td className="p-3">
-                      <button className="button bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700" onClick={() => deleteWorkOrder(entry.Id)}>Delete</button>
+                      <button className="button bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700" onClick={() => deleteWorkOrder(entry._id)}>Delete</button>
                     </td>
                   </tr>
                 ))}

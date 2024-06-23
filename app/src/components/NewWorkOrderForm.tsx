@@ -1,21 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import './styles/AddWork.css';
 import { useNavigate } from 'react-router-dom';
 
-// AUTOMATICALLY GENERATE WORKORDER ID ON FORM
+// Get the current work order count from local storage
+const getCurrentWorkOrderCount = () => {
+  const count = localStorage.getItem('workOrderCount');
+  return count ? parseInt(count, 10) : 0;
+};
+
+// Generate the next work order ID
+const generateWorkOrderId = () => {
+  const currentCount = getCurrentWorkOrderCount();
+  const nextCount = currentCount + 1;
+  localStorage.setItem('workOrderCount', nextCount.toString());
+  return `W${String(nextCount).padStart(3, '0')}`;
+};
 
 const NewWorkOrderForm: React.FC = () => {
   const navigate = useNavigate();
   const [formState, setFormState] = useState({
-    _id: '',
+    Id: generateWorkOrderId(),
     Description: '',
     Type: '',
     NTE: '',
     Date: '',
     AssignedTo: '',
-    Status: 'Pending',
+    Status: '',
     Priority: '',
     Location: '',
     Notes: '',
@@ -37,7 +49,7 @@ const NewWorkOrderForm: React.FC = () => {
     setError('');
 
     const newOrder = {
-      _id: formState._id,
+      Id: formState.Id,
       Description: formState.Description,
       Type: formState.Type,
       NTE: parseFloat(formState.NTE),
@@ -55,7 +67,7 @@ const NewWorkOrderForm: React.FC = () => {
       console.log('Work order has been created', response.data);
       navigate('/work-request');
     } catch (e) {
-      console.error('Error creating work order:', error);
+      console.error('Error creating work order:', e);
       setError('Error creating work order: ' + e.message);
     } finally {
       setLoading(false);
@@ -64,13 +76,13 @@ const NewWorkOrderForm: React.FC = () => {
 
   const handleNext = () => {
     if (currentSection < sections.length - 1) {
-      setCurrentSection((prev) => (prev + 1) % sections.length);
+      setCurrentSection(prev => prev + 1);
     }
   };
 
   const handlePrev = () => {
     if (currentSection > 0) {
-      setCurrentSection((prev) => (prev - 1 + sections.length) % sections.length);
+      setCurrentSection(prev => prev - 1);
     }
   };
 
@@ -81,7 +93,7 @@ const NewWorkOrderForm: React.FC = () => {
         <>
           <label className="flex flex-col space-y-2">
             <span>Work Order Number:</span>
-            <input type="text" name="Id" value={formState._id} onChange={handleChange} required className="p-2 bg-gray-700 rounded-lg"/>
+            <input type="text" name="Id" value={formState.Id} onChange={handleChange} readOnly className="p-2 bg-gray-700 rounded-lg"/>
           </label>
           <label className="flex flex-col space-y-2">
             <span>Description:</span>
@@ -89,7 +101,12 @@ const NewWorkOrderForm: React.FC = () => {
           </label>
           <label className="flex flex-col space-y-2">
             <span>Type:</span>
-            <input type="text" name="Type" value={formState.Type} onChange={handleChange} required className="p-2 bg-gray-700 rounded-lg"/>
+             <select name="Type" value={formState.Type} onChange={handleChange} className="p-2 bg-gray-700 rounded-lg">
+              <option value="default">Select type...</option>
+              <option value="HVAC">HVAC</option>
+              <option value="REF">Refrigeration</option>
+              <option value="GM">General Maintanance</option>
+            </select>
           </label>
           <label className="flex flex-col space-y-2">
             <span>NTE:</span>
@@ -113,6 +130,7 @@ const NewWorkOrderForm: React.FC = () => {
           <label className="flex flex-col space-y-2">
             <span>Status:</span>
             <select name="Status" value={formState.Status} onChange={handleChange} className="p-2 bg-gray-700 rounded-lg">
+              <option value="default">Select status</option>
               <option value="Pending">Pending</option>
               <option value="In Progress">In Progress</option>
               <option value="Completed">Completed</option>
@@ -128,6 +146,7 @@ const NewWorkOrderForm: React.FC = () => {
           <label className="flex flex-col space-y-2">
             <span>Priority:</span>
             <select name="Priority" value={formState.Priority} onChange={handleChange} required className="p-2 bg-gray-700 rounded-lg">
+              <option value="default">Select priority</option>
               <option value="1">High</option>
               <option value="2">Medium</option>
               <option value="3">Low</option>
@@ -164,18 +183,20 @@ const NewWorkOrderForm: React.FC = () => {
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeInOut' }}
-      className="new-work-order-form-container p-8 w-screen h-screen bg-gray-900 text-white flex flex-col items-center"
+      className="new-work-order-form-container p-10 w-full h-full bg-gray-900 text-white flex flex-col items-center"
     >
       <header className="page-header w-full max-w-5xl mb-6 bg-gray-800 p-4 rounded-2xl flex justify-between items-center shadow-md" data-aos="fade-down">
         <h2 className="text-2xl font-semibold">Add New Work Order</h2>
         <div className="user-info text-lg">Welcome, {username}</div>
       </header>
-      <div className="form-wrapper w-full max-w-5xl bg-gray-800 p-6 rounded-2xl shadow-md" data-aos="fade-up">
-        <form className="new-work-order-form flex flex-col space-y-4" onSubmit={handleSubmit} method="post">
+      <div className="form-wrapper w-full max-w-5xl   bg-gray-800 p-3 rounded-2xl shadow-md flex-1" data-aos="fade-up">
+        <form className="new-work-order-form flex flex-col space-y-4 h-full" onSubmit={handleSubmit} method="post">
           <h3 className="text-xl font-semibold mb-4">{sections[currentSection].title}</h3>
-          {sections[currentSection].content}
+          <div className="flex flex-col space-y-4 flex-1">
+            {sections[currentSection].content}
+          </div>
           {error && <p className="text-red-500">{error}</p>}
-          <div className="flex justify-between w-full mt-4" >
+          <div className="flex justify-between w-full mt-4">
             <button type="button" onClick={handlePrev} className="bg-gray-500 text-white py-2 px-4 rounded-2xl hover:bg-gray-700 transition duration-300 shadow">
               &larr;
             </button>
