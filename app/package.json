@@ -43,7 +43,8 @@
     "react-signature-canvas": "^1.0.6",
     "react-tooltip": "^5.26.4",
     "tailwind-merge": "^2.3.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "technow": "file:.."
   },
   "devDependencies": {
     "@types/aos": "^3.0.7",

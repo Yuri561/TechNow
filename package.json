@@ -8,7 +8,8 @@
     "server": "nodemon backend/server.js",
     "client": "npm run dev --prefix app",
     "build": "npm run build --prefix app",
-    "deploy": "npm run build && gh-pages -d app/build",
+    "predeploy": "npm run build --prefix app",
+    "deploy": "gh-pages -d app/dist",
     "predeploy": "npm install --prefix app"
   },
   "repository": {
