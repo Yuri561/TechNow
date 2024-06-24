@@ -1,9 +1,8 @@
 {
   "version": 2,
-  "name": "technow",
   "builds": [
     {
-      "src": "app/vite.config.js",
+      "src": "app/package.json",
       "use": "@vercel/static-build",
       "config": {
         "distDir": "app/dist"
