@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHammer, faScrewdriver, faWrench, faToolbox, faArrowRight, faArrowLeft, faClipboardList } from '@fortawesome/free-solid-svg-icons';
@@ -8,7 +8,6 @@ const ToolBox: React.FC = () => {
   const [showQuizzes, setShowQuizzes] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
-  const videoRef = useRef(null);
 
   const username = localStorage.getItem('username');
   const tools = [

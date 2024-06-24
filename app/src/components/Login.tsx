@@ -21,10 +21,11 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
     try {
       const result = await axios.post('http://localhost:5000/api/login', { username, pin });
       if (result.status === 200) {
-        console.log('User successfully authenticated');
-        setIsAuthenticated(true);
+
+        console.log('User successfully authenticated', result.data.usernames, result.data.role);
         localStorage.setItem('username', username);
         localStorage.setItem('role', result.data.role);
+        setIsAuthenticated(true);
         navigate('/');
       } else {
         setError('Incorrect PIN. Please try again.');

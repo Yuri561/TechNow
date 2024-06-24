@@ -15,8 +15,7 @@ const GenerateReceipt: React.FC = () => {
   const sigCanvas = useRef<SignatureCanvas>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target as HTMLInputElement;
-    const checked = type === 'checkbox' ? e.target.checked : false;
+    const { type, name, checked, value } = e.target as HTMLInputElement;
     setFormState(prevState => ({ ...prevState, [name]: type === 'checkbox' ? checked : value }));
   };
 

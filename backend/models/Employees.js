@@ -5,7 +5,7 @@ const EmployeesSchema = new mongoose.Schema({
 	username: { type: String, required: true, unique: true }, // Make username unique
 	email: { type: String, required: true, unique: true }, // Add email field
 	pin: { type: String, required: true },
-	role: { type: String, required: true, default: 'employee' },
+	role: { type: String, required: true},
 });
 
 EmployeesSchema.pre('save', async function (next) {

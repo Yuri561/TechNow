@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -116,6 +117,8 @@ const Register: React.FC = () => {
             >
               <option value="technician">Technician</option>
               <option value="admin">Admin</option>
+              <option value="admin">Help Desk</option>
+              <option value="office">Office Staff</option>
               <option value="manager">Manager</option>
               <option value="dispatcher">Dispatcher</option>
               <option value="customer">Customer</option>
