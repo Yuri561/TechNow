@@ -5,7 +5,10 @@ import axios from 'axios';
 const Register: React.FC = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [role, setRole] = useState('technician'); // Default role
   const [pin, setPin] = useState('');
+  const [confirmPin, setConfirmPin] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -14,8 +17,13 @@ const Register: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    if (pin !== confirmPin) {
+      setError('PIN and Confirm PIN do not match.');
+      setLoading(false);
+      return;
+    }
     try {
-      const result = await axios.post('http://localhost:5000/api/register', { username, pin });
+      const result = await axios.post('http://localhost:5000/api/register', { username, email, role, pin });
       if (result.status === 201) {
         console.log('User successfully created');
         navigate('/login');
@@ -40,6 +48,18 @@ const Register: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-6" method='POST'>
           <h1 className="text-2xl font-bold text-center">Technician Register</h1>
           {error && <p className="text-red-500 text-center">{error}</p>}
+          <div className="space-y-1">
+            <label htmlFor="email" className="block text-sm font-medium">Email</label>
+            <input
+              type="text"
+              id="email"
+              className="w-full p-2.5 bg-gray-700 border border-gray-600 rounded focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
           <div className="space-y-1">
             <label htmlFor="username" className="block text-sm font-medium">Username</label>
             <input
@@ -71,6 +91,35 @@ const Register: React.FC = () => {
             >
               {showPassword ? 'Hide' : 'Show'}
             </button>
+          </div>
+          <div className="space-y-1 relative">
+            <label htmlFor="confirmPin" className="block text-sm font-medium">Confirm PIN</label>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              id="confirmPin"
+              className="w-full p-2.5 bg-gray-700 border border-gray-600 rounded focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Confirm your PIN"
+              value={confirmPin}
+              onChange={(e) => setConfirmPin(e.target.value)}
+              maxLength={4}
+              required
+            />
+          </div>
+          <div className="space-y-1">
+            <label htmlFor="role" className="block text-sm font-medium">Role</label>
+            <select
+              id="role"
+              className="w-full p-2.5 bg-gray-700 border border-gray-600 rounded focus:ring-blue-500 focus:border-blue-500"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              required
+            >
+              <option value="technician">Technician</option>
+              <option value="admin">Admin</option>
+              <option value="manager">Manager</option>
+              <option value="dispatcher">Dispatcher</option>
+              <option value="customer">Customer</option>
+            </select>
           </div>
           <div>
             <button

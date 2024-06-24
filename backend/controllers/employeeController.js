@@ -11,62 +11,61 @@ const getEmployees = async (req, res) => {
 };
 
 const registerEmployee = async (req, res) => {
+	const { username, email, pin } = req.body;
 	try {
- const userExists = await EmployeeModel.findOne({ email });
+		const userExists = await EmployeeModel.findOne({ email });
 
- if (userExists) {
-		res.status(400);
-		throw new Error('User already exists');
- }
+		if (userExists) {
+			res.status(400).json({ message: 'User already exists' });
+			return;
+		}
 
- const user = await EmployeeModel.create({
-		username,
-		email,
-		pin,
- });
-
- if (user) {
-		generateToken(res, user._id);
-
-		res.status(201).json({
-			_id: user._id,
-			name: user.name,
-			email: user.email,
+		const user = await EmployeeModel.create({
+			username,
+			email,
+			pin,
 		});
- } else {
-		res.status(400);
-		throw new Error('Invalid user data');
- }
+
+		if (user) {
+			generateToken(res, user._id);
+
+			res.status(201).json({
+				_id: user._id,
+				username: user.username,
+				email: user.email,
+				role: user.role,
+			});
+		} else {
+			res.status(400).json({ message: 'Invalid user data' });
+		}
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 	}
 };
+
 const loginEmployee = async (req, res) => {
-	const { username, pin, _id } = req.body;
-	if (!username || !pin || !_id) {
+	const { username, pin } = req.body;
+	if (!username || !pin) {
 		return res.status(400).json({ message: 'Username and PIN are required' });
 	}
 
 	try {
 		const user = await EmployeeModel.findOne({ username });
-		 if (user && (await user.comparePin(pin))) {
-				generateToken(res, user._id);
+		if (user && (await user.comparePin(pin))) {
+			generateToken(res, user._id);
 
-				res.status(200).json({
-					_id: user._id,
-					username: user.username,
-					role: user.role,
-        });
-       
-			} else {
-				res.status(401);
-				throw new Error('Invalid email or password');
-			}
+			res.status(200).json({
+				_id: user._id,
+				username: user.username,
+				role: user.role,
+			});
+		} else {
+			res.status(401).json({ message: 'Invalid username or PIN' });
+		}
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 	}
 };
-
 
 module.exports = {
 	getEmployees,

@@ -9,17 +9,19 @@ const WorkRequest: React.FC = () => {
   const [workEntries, setWorkEntries] = useState<{ _id: string, Id: string, Description: string, Type: string, NTE: string, Date: string, AssignedTo: string, Status: string, Priority: string, Location: string, Notes: string, PO: string }[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchWorkOrders = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get('http://localhost:5000/api/workorders');
-      setWorkEntries(Array.isArray(response.data) ? response.data : []);
-    } catch (error) {
-      console.error('Error fetching work orders:', error);
-    }
-    setLoading(false);
-  };
-
+const fetchWorkOrders = async () => {
+  setLoading(true);
+  try {
+    const username = localStorage.getItem('username'); // Adjust based on your implementation
+    const response = await axios.get('http://localhost:5000/api/workorders', {
+      params: { assignedTo: username }
+    });
+    setWorkEntries(Array.isArray(response.data) ? response.data : []);
+  } catch (error) {
+    console.error('Error fetching work orders:', error);
+  }
+  setLoading(false);
+};
   const deleteWorkOrder = async (_id: string) => {
     setLoading(true);
     try {

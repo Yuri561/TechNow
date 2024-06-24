@@ -3,12 +3,19 @@ const WorkOrderModel = require('../models/WorkOrderSchema');
 // API call to get all work orders assigned to a specific user
 const getWorkOrders = async (req, res) => {
 	try {
-		const workOrders = await WorkOrderModel.find();
+		const { assignedTo } = req.query;
+		let workOrders;
+		if (assignedTo) {
+			workOrders = await WorkOrderModel.find({ AssignedTo: assignedTo });
+		} else {
+			workOrders = await WorkOrderModel.find();
+		}
 		res.status(200).json(workOrders);
 	} catch (err) {
-		res.status(500).json({ error: 'Could not find work orders' });
+		res.status(500).json({ error: err.message });
 	}
 };
+
 
 // API call to create a new work order
 const createWorkOrder = async (req, res) => {
