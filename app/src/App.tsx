@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import WorkRequest from './components/WorkRequest';
@@ -31,11 +31,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const username = localStorage.getItem('username');
-    if (username) {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-    }
+    setIsAuthenticated(!!username);
   }, []);
 
   return (
@@ -49,9 +45,16 @@ const App: React.FC = () => {
               <Loading />
             ) : (
               <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<React.Fragment><Login setIsAuthenticated={setIsAuthenticated} /></React.Fragment>} />
-                <Route path="/register" element={<React.Fragment><Register/></React.Fragment>} />
+                <Route
+                  path="/"
+                  element={
+                    <ProtectedRoute isAuthenticated={isAuthenticated}>
+                      <Home />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+                <Route path="/register" element={<Register />} />
                 <Route
                   path="/work-request"
                   element={
@@ -134,3 +137,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+

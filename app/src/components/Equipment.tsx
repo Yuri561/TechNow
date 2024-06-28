@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 interface WorkOrder {
   rtuInformation: string;
-  maintenanceHistory: never[];
+  maintenanceHistory: string[]; // Changed to string[] for example purposes
   Id: string;
   Description: string;
   Type: string;
@@ -64,6 +64,7 @@ const Equipment: React.FC = () => {
 
   const handleWorkOrderSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedId = e.target.value;
+    console.log('Selected Work Order ID:', selectedId);
     const selectedOrder = workOrders.find(order => order.Id === selectedId) || null;
     setSelectedWorkOrder(selectedOrder);
   };

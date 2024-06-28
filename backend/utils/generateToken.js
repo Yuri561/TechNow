@@ -1,16 +1,17 @@
-const jwt  =  require('jsonwebtoken');
-const JWT_SECRET = '1976';
-const generateToken = (res, id) => {
-    const token = jwt.sign({ id }, JWT_SECRET, {
-			expiresIn: '30d',
-		}); // this is creating the token
+const jwt = require('jsonwebtoken');
 
-    res.cookie('jwt', token, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 365,
-        secure: process.env.NODE_ENV !== 'development',
-        sameSite: 'strict',
-    })
-}
+const JWT_SECRET = '1976'
+const generateToken = (res, userId) => {
+  const token = jwt.sign({ userId }, JWT_SECRET, {
+    expiresIn: '30d',
+  });
+
+  res.cookie('jwt', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV !== 'development',
+    sameSite: 'strict',
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+  });
+};
 
 module.exports = generateToken;

@@ -24,7 +24,7 @@ const Register: React.FC = () => {
       return;
     }
     try {
-      const result = await axios.post('http://localhost:5000/api/register', { username, email, role, pin });
+      const result = await axios.post('http://localhost:5000/register', { username, email, role, pin });
       if (result.status === 201) {
         console.log('User successfully created');
         navigate('/login');

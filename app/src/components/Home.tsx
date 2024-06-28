@@ -7,6 +7,7 @@ import ControlPanels from './ControlPanels';
 import MembersSection from './MembersSection';
 import WorkOrdersChart from './WorkOrdersChart';
 
+
 interface Member {
   name: string;
   email: string;
@@ -15,7 +16,8 @@ interface Member {
   bgColor: string;
 }
 
-const Home: React.FC = () => {
+
+const Home: React.FC= ()=> {
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [isClockedIn, setIsClockedIn] = useState<boolean>(false);
   const [elapsedTime, setElapsedTime] = useState<number>(0);

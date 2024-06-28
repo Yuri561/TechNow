@@ -19,7 +19,7 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
     setLoading(true);
     setError('');
     try {
-      const result = await axios.post('http://localhost:5000/api/login', { username, pin });
+      const result = await axios.post('http://localhost:5000/login', { username, pin });
       if (result.status === 200) {
 
         console.log('User successfully authenticated', result.data.usernames, result.data.role);

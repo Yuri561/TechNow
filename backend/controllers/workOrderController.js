@@ -2,19 +2,33 @@ const WorkOrderModel = require('../models/WorkOrderSchema');
 
 // API call to get all work orders assigned to a specific user
 const getWorkOrders = async (req, res) => {
-	try {
-		const { assignedTo } = req.query;
-		let workOrders;
-		if (assignedTo) {
-			workOrders = await WorkOrderModel.find({ AssignedTo: assignedTo });
-		} else {
-			workOrders = await WorkOrderModel.find();
-		}
-		res.status(200).json(workOrders);
-	} catch (err) {
-		res.status(500).json({ error: err.message });
-	}
+  try {
+    // Extracting 'assignedTo' query parameter from the request
+    const { assignedTo } = req.query;
+    
+    // Declare a variable to hold the work orders
+    let workOrders;
+
+    // Check if 'assignedTo' query parameter is provided
+    if (assignedTo) {
+      // Fetch work orders assigned to the specific user
+      workOrders = await WorkOrderModel.find({ AssignedTo: assignedTo });
+    } else {
+      // Fetch all work orders
+      workOrders = await WorkOrderModel.find();
+    }
+
+    // Send the work orders as a JSON response with a 200 status code
+    res.status(200).json(workOrders);
+  } catch (err) {
+    // Log the error (optional, for debugging)
+    console.error(err);
+
+    // Send a 500 status code with the error message
+    res.status(500).json({ error: err.message });
+  }
 };
+
 
 
 // API call to create a new work order
