@@ -7,7 +7,8 @@
     "navbar navbar"
     "sidebar main-content";
   height: 100vh;
-  overflow: auto;
+  overflow: hidden;
+  margin: 0 auto;
 }
 
 .navbar {
@@ -40,8 +41,9 @@
   flex-direction: column; /* Ensure children are stacked vertically */
   justify-content: center;
   align-items: center;
-  overflow-y: auto;
-  padding: 0;
+  overflow-y: hidden;
+  
+  padding: 0
   
   
 }

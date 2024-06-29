@@ -13,19 +13,22 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [role, setRole] = useState('');
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     try {
-      const result = await axios.post('http://localhost:5000/login', { username, pin });
+      const result = await axios.post('http://localhost:5000/login', { username, pin, role });
       if (result.status === 200) {
 
         console.log('User successfully authenticated', result.data.usernames, result.data.role);
         localStorage.setItem('username', username);
-        localStorage.setItem('role', result.data.role);
+        localStorage.setItem('role', role);
         setIsAuthenticated(true);
+        setRole(result.data.role);
         navigate('/');
       } else {
         setError('Incorrect PIN. Please try again.');

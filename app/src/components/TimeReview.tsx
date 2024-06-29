@@ -19,9 +19,9 @@ const TimeReview: React.FC = () => {
   ];
 
   return (
-    <div className="time-review p-8 w-full h-full rounded bg-gray-900 text-white flex flex-col items-center">
+    <div className="time-review p-8 w-full h-full rounded bg-gray-900 sm:text-sm text-white flex flex-col items-center overflow-auto">
       <header data-aos="fade-down" className="page-header w-full max-w-7xl mb-4 bg-gray-800 p-4 rounded flex justify-between items-center">
-        <h2 className="text-2xl font-semibold flex items-center">
+        <h2 className="text-xl font-semibold flex items-center">
           <FontAwesomeIcon icon={faClock} className="mr-2" />
           Time Review
         </h2>
@@ -51,10 +51,10 @@ const TimeReview: React.FC = () => {
                   <td className="p-3">{entry.totalHours}</td>
                   <td className="p-3">{entry.taskDescription}</td>
                   <td className="p-3">
-                    <button className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700 transition">Edit</button>
+                    <button className="bg-green-500 text-white py-1 px-2 md:py-2 md:px-4 rounded hover:bg-green-700 transition">Edit</button>
                   </td>
                   <td className="p-3">
-                    <button className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 transition">Delete</button>
+                    <button className="bg-red-500 text-white py-1 px-2 md:py-2 md:px-4 rounded hover:bg-red-700 transition">Delete</button>
                   </td>
                 </tr>
               ))}
@@ -62,8 +62,8 @@ const TimeReview: React.FC = () => {
           </table>
         </div>
         <div className="button-group flex justify-center space-x-4 mt-4">
-          <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition">Add Time Entry</button>
-          <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition">Submit Time</button>
+          <button className="bg-blue-500 text-white py-1 px-2 md:py-2 md:px-4 rounded hover:bg-blue-700 transition">Add Time Entry</button>
+          <button className="bg-blue-500 text-white py-1 px-2 md:py-2 md:px-4 rounded hover:bg-blue-700 transition">Submit Time</button>
         </div>
       </div>
     </div>

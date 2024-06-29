@@ -11,13 +11,13 @@ const DocsUpload: React.FC = () => {
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeInOut' }}
-      className="documents p-5 w-screen h-screen bg-gray-900 text-white flex flex-col items-center "
+      className="documents p-5 w-screen h-full bg-gray-900 text-white flex flex-col items-center overflow-y-hidden "
     >
-      <header className="documents-header w-full max-w-5xl mb-6 bg-gray-800 p-4 rounded-2xl flex justify-between items-center shadow-md">
+      <header className="documents-header w-full max-w-7xxl mb-6 bg-gray-800 p-4 rounded-2xl flex justify-between items-center shadow-md">
         <h2 className="text-2xl font-semibold">Document Management</h2>
         <div className="user-info text-lg">Welcome, {username}</div>
       </header>
-      <div className="documents-content w-full max-w-5xl flex flex-col space-y-6">
+      <div className="documents-content w-full max-w-7xxl flex flex-col space-y-6">
         <div className="upload-section bg-gray-800 p-6 rounded-2xl shadow-md flex flex-col items-center">
           <p className="text-xl font-semibold mb-4">Upload your documents securely</p>
           <input type="file" className="p-2 bg-gray-700 rounded-lg mb-4"/>

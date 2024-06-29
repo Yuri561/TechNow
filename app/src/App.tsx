@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import WorkRequest from './components/WorkRequest';
@@ -19,9 +19,19 @@ import { ThemeModifier } from './components/ThemeModifier'; // Ensure this path 
 
 import './App.css';
 
+// Define the props for the Notes component
+// interface NotesProps {
+//   isOpen: boolean;
+//   onClose: () => void;
+//   initialNotes: string;
+//   onSave: (notes: string) => void;
+// }
+
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isNotesOpen, setIsNotesOpen] = useState(false);
+  const [notesContent, setNotesContent] = useState('');
 
   useEffect(() => {
     setLoading(true);
@@ -33,6 +43,11 @@ const App: React.FC = () => {
     const username = localStorage.getItem('username');
     setIsAuthenticated(!!username);
   }, []);
+
+  const handleNotesSave = (newNotes: string) => {
+    setNotesContent(newNotes);
+    setIsNotesOpen(false);
+  };
 
   return (
     <ThemeModifier defaultTheme="dark" storageKey="vite-ui-theme">
@@ -123,7 +138,12 @@ const App: React.FC = () => {
                   path="/notes"
                   element={
                     <ProtectedRoute isAuthenticated={isAuthenticated}>
-                      <Notes />
+                      <Notes 
+                        isOpen={isNotesOpen} 
+                        onClose={() => setIsNotesOpen(false)} 
+                        initialNotes={notesContent} 
+                        onSave={handleNotesSave} 
+                      />
                     </ProtectedRoute>
                   }
                 />
@@ -137,4 +157,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-

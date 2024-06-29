@@ -4,6 +4,7 @@ import axios from 'axios';
 import 'aos/dist/aos.css';
 import AOS from 'aos';
 import './styles/WorkRequest.css';
+import Notes from './Notes';
 
 const WorkRequest: React.FC = () => {
   const username = localStorage.getItem('username');
@@ -90,7 +91,7 @@ const WorkRequest: React.FC = () => {
                     <td className="p-3">{entry.Notes}</td>
                     <td className="p-3">{entry.PO}</td>
                     <td className="p-3">
-                      <button className="button bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700" onClick={() => { return (<Notes />) }}>Edit</button>
+                      <button className="button bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700" onClick={() => {<Notes isOpen={true} onClose={() => {}} initialNotes="" onSave={() => {}} /> }}>Edit</button>
                     </td>
                     <td className="p-3">
                       <button className="button bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700" onClick={() => deleteWorkOrder(entry._id)}>Delete</button>
@@ -102,7 +103,7 @@ const WorkRequest: React.FC = () => {
           )}
         </div>
         <div  className="button-group flex justify-center space-x-4">
-          <button className="button bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700" onClick={fetchWorkOrders}>Refresh</button>
+          <button className="button bg-blue-500 md:text-lg text-white py-2 px-4 rounded hover:bg-blue-700" onClick={fetchWorkOrders}>Refresh</button>
           <Link to='/new-work-order-form' className="button bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">Add Work Entry</Link>
           <button className="button bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">Submit Work</button>
         </div>

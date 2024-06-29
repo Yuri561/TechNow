@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 interface WorkOrder {
   rtuInformation: string;
-  maintenanceHistory: string[]; // Changed to string[] for example purposes
+  maintenanceHistory: string[];
   Id: string;
   Description: string;
   Type: string;
@@ -32,10 +32,8 @@ const Equipment: React.FC = () => {
   useEffect(() => {
     const fetchWorkOrders = async () => {
       try {
-        const response = await axios.get(`/api/workorders?assignedTo=${username}`);
+        const response = await axios.get(`/workorders?assignedTo=${username}`);
         console.log('Fetched work orders:', response.data);
-
-        // Ensure the data is an array
         setWorkOrders(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error('Error fetching work orders:', error);

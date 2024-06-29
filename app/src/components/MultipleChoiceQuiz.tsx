@@ -67,7 +67,7 @@ const MultipleChoiceQuiz: React.FC<MultipleChoiceQuizProps> = ({ quiz, setScore 
       {showResults && (
         <div className="results mt-6">
           <h4 className="text-lg font-semibold">Quiz Results</h4>
-          <p>You scored {score} out of {quiz.questions.length}</p>
+          <p>You scored {selectedAnswers.filter((answer, index) => answer === quiz.questions[index].correctAnswer).length} out of {quiz.questions.length}</p>
           {quiz.questions.map((question, questionIndex) => (
             <div key={questionIndex} className="mb-4">
               <p className="font-semibold">{question.question}</p>

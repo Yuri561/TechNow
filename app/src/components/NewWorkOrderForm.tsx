@@ -186,7 +186,7 @@ const NewWorkOrderForm: React.FC = () => {
       className="new-work-order-form-container p-10 w-full h-full bg-gray-900 text-white flex flex-col items-center"
     >
       <header className="page-header w-full max-w-5xl mb-6 bg-gray-800 p-4 rounded-2xl flex justify-between items-center shadow-md" data-aos="fade-down">
-        <h2 className="text-2xl font-semibold">Add New Work Order</h2>
+        <h2 className="text-2xl font-semibold sm: text-sm">New Work Order</h2>
         <div className="user-info text-lg">Welcome, {username}</div>
       </header>
       <div className="form-wrapper w-full max-w-5xl   bg-gray-800 p-3 rounded-2xl shadow-md flex-1" data-aos="fade-up">
