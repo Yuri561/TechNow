@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { motion } from 'framer-motion';
+
 
 interface WorkOrder {
   rtuInformation: string;
@@ -68,10 +68,8 @@ const Equipment: React.FC = () => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: 'easeInOut' }}
+    <div
+      
       className="equipment p-8 w-full h-full bg-gray-900 text-white flex flex-col items-center overflow-y-auto"
     >
       <header className="page-header w-full max-w-5xl mb-6 bg-gray-800 p-4 rounded-2xl flex justify-between items-center shadow-md">
@@ -140,7 +138,7 @@ const Equipment: React.FC = () => {
           </>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 
