@@ -7,7 +7,7 @@
     "start": "node -r dotenv/config backend/server.js",
     "server": "nodemon backend/server.js",
     "client": "npm run dev --prefix app",
-    "build": "vite build --ouput public",
+    "build": "npm run build --prefix app",
     "predeploy": "npm run build --prefix app",
     "deploy": "gh-pages -d app/dist"
   },
