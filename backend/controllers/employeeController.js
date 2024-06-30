@@ -45,8 +45,8 @@ const registerEmployee = async (req, res) => {
 };
 
 const loginEmployee = async (req, res) => {
-  const { username, pin } = req.body;
-  if (!username || !pin) {
+  const { username, pin, role } = req.body;
+  if (!username || !pin || !role) {
     return res.status(400).json({ message: 'Username and PIN are required' });
   }
 
@@ -57,7 +57,9 @@ const loginEmployee = async (req, res) => {
 
       res.status(200).json({
         username: user.username,
-		pin: user.pin,
+        pin: user.pin,
+        role: user.role,
+        token: user.generateToken(),
       });
       console.log(`user: ${user}`);
     } else {
