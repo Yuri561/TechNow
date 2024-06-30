@@ -12,7 +12,9 @@ const quizRoutes = require('./routes/quizRoute');
 const app = express();
 
 // Middleware
-app.use(cors({ origin: 'https://technow.vercel.app', credentials: true }));
+app.use(cors({ origin: ['https://technow.vercel.app'],
+              methods: ['POST', 'GET', 'DELETE', 'UPDATE'],
+              credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
