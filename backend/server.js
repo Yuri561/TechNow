@@ -12,9 +12,11 @@ const quizRoutes = require('./routes/quizRoute');
 const app = express();
 
 // Middleware
-app.use(cors({ origin: ['https://technow.vercel.app'],
-              methods: ['POST', 'GET', 'DELETE', 'UPDATE'],
-              credentials: true }));
+app.use(cors({
+  origin: ['https://technow.vercel.app'],
+  methods: ['POST', 'GET', 'DELETE', 'UPDATE'],
+  credentials: true
+}));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -40,7 +42,4 @@ mongoose.connect(uri, {
   console.error('MongoDB connection error:', err);
 });
 
-const PORT = 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+module.exports = app;
