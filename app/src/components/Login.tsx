@@ -24,7 +24,7 @@ const Login: React.FC<LoginProps> = ({ setIsAuthenticated }) => {
       const result = await axios.post('http://localhost:5000/login', { username, pin, role });
       if (result.status === 200) {
 
-        console.log('User successfully authenticated', result.data.username, result.data.role);
+        console.log('User successfully authenticated', result.data.usernames, result.data.role);
         localStorage.setItem('username', username);
         localStorage.setItem('role', role);
         setIsAuthenticated(true);
