@@ -13,18 +13,19 @@
       "src": "src/**/*",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "public"
+        "distDir": "dist"
       }
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
-
-      "src": "/",
-
-      "dest": "/"
+      "src": "/api/(.*)",
+      "dest": "/backend/$1"
     },
-    
+    {
+      "src": "/(.*)",
+      "dest": "/src/$1"
+    }
   ]
 }
+
