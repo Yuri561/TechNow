@@ -32,7 +32,7 @@ const WorkRequest: React.FC = () => {
   const deleteWorkOrder = async (_id: string) => {
     setLoading(true);
     try {
-      await axios.delete(`http://localhost:5000/api/workorders/${_id}`);
+      await axios.delete(`http://localhost:5000/workorders/${_id}`);
       fetchWorkOrders(); // Refresh the list after deletion
     } catch (error) {
       console.error('Error deleting work order:', error);
@@ -43,13 +43,13 @@ const WorkRequest: React.FC = () => {
   return (
     <div
       data-aos="fade-in"
-      className="work-request p-0 max-w-9xl w-full bg-gray-900 text-white flex flex-col items-center"
+      className="work-request p-0 max-w-9xl w-full h-full bg-gray-900 text-white flex flex-col items-center overflow-auto"
     >
       <header data-aos="fade-down" className="page-header w-full mb-4 bg-gray-800 p-4 rounded flex justify-between items-center">
         <h2 className="text-2xl font-semibold">Work Request</h2>
         <div className="user-info text-lg">Welcome, {username}</div>
       </header>
-      <div data-aos="fade-up" className="work-entry-form w-full bg-gray-800 p-6 rounded flex flex-col items-center">
+      <div data-aos="fade-up" className="work-entry-form w-full bg-gray-800 p-6 rounded flex flex-col items-center overflow-auto">
         <h3 className="text-xl font-semibold mb-4">Manage Work Entries</h3>
         <div className="work-table-container w-full overflow-x-auto mb-4">
           {loading ? (
@@ -101,10 +101,10 @@ const WorkRequest: React.FC = () => {
             </table>
           )}
         </div>
-        <div className="button-group flex justify-center space-x-4">
-          <button className="button bg-blue-500 text-lg text-white py-2 px-4 rounded hover:bg-blue-700" onClick={fetchWorkOrders}>Refresh</button>
-          <Link to='/new-work-order-form' className="button bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">Add Work Entry</Link>
-          <button className="button bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">Submit Work</button>
+        <div className="button-group flex justify-center space-x-4 my-4">
+          <button className="bg-blue-500 text-white py-1 sm:py-2 px-2 sm:px-4 rounded-lg hover:bg-blue-700 transition duration-300 shadow" onClick={fetchWorkOrders}>Refresh</button>
+          <Link to='/new-work-order-form' className="bg-blue-500 text-white py-1 sm:py-2 px-2 sm:px-4 rounded-lg hover:bg-blue-700 transition duration-300 shadow">Add Work Entry</Link>
+          <button className="bg-blue-500 text-white py-1 sm:py-2 px-2 sm:px-4 rounded-lg hover:bg-blue-700 transition duration-300 shadow">Submit Work</button>
         </div>
       </div>
     </div>

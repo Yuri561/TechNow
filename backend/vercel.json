@@ -19,16 +19,12 @@
   ],
   "routes": [
     {
-<<<<<<< HEAD
-      "src": "/api/(.*)",
-=======
-      "src": "/backend/(.*)",
->>>>>>> ba63d6f3f864b8dfacc1f27a0f0cfd7e14fc483a
-      "dest": "/backend/$1"
-    },
-    {
       "src": "/(.*)",
-      "dest": "/src/$1"
-    }
+
+      "src": "/",
+
+      "dest": "/"
+    },
+    
   ]
 }
