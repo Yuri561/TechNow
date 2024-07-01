@@ -13,6 +13,8 @@ const WorkOrderSchema = new mongoose.Schema(
 		Priority: { type: Number, required: true },
 		Location: { type: String, required: true },
 		Notes: { type: String, required: false },
+		image: {type: String, required: false},
+		CompletedNotes: {type: String, required: false},
 		rtuInformation: { type: String, required: false },
 		maintenanceHistory: { type: String, required: false },
 		PO: { type: Number, required: false },
