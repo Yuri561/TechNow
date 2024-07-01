@@ -12,7 +12,12 @@ const quizRoutes = require('./routes/quizRoute');
 const app = express();
 
 // Middleware
-const allowedOrigins = ['https://tech-client-flax.vercel.app', 'tech-client-ookfck4j7-impact-team-5e808f93.vercel.app'];
+const allowedOrigins = [
+    'https://tech-client-flax.vercel.app',
+    'https://tech-client-ookfck4j7-impact-team-5e808f93.vercel.app',
+    'https://tech-client-ogftbdhks-impact-team-5e808f93.vercel.app'
+];
+
 app.use(cors({
     origin: function (origin, callback) {
         if (!origin) return callback(null, true); // Allow requests with no origin (like mobile apps or curl requests)
