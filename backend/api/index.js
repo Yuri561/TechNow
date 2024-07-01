@@ -24,7 +24,7 @@ app.use(quizRoutes);
 
 // Root Route
 app.get('/', (req, res) => {
-    res.send({ message: 'hello world from server' });
+    res.json({ message: 'hello world from server' });
 });
 
 // MongoDB Connection
