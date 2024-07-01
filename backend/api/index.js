@@ -15,8 +15,10 @@ const app = express();
 const allowedOrigins = [
     'https://tech-client-flax.vercel.app',
     'https://tech-client-ookfck4j7-impact-team-5e808f93.vercel.app',
-    'https://tech-client-ogftbdhks-impact-team-5e808f93.vercel.app'
+    'https://tech-client-ogftbdhks-impact-team-5e808f93.vercel.app',
+    'https://tech-client-b5ggzuqz1-impact-team-5e808f93.vercel.app'
 ];
+
 
 app.use(cors({
     origin: function (origin, callback) {
