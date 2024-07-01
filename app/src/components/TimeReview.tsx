@@ -40,12 +40,12 @@ const TimeReview: React.FC = () => {
             />
             <FontAwesomeIcon
               icon={faPaperPlane}
-              className="text-white cursor-pointer hover:text-blue-500 transition sm: px-3 sm: text-sm sm: font-small"
+              className="text-white cursor-pointer hover:text-blue-500 transition"
               data-tooltip-id="submitTooltip"
               data-tooltip-content="Submit Time"
             />
-            <Tooltip id="addTooltip" place="top" effect="solid" />
-            <Tooltip id="submitTooltip" place="top" effect="solid" />
+            <Tooltip id="addTooltip" place="top" />
+            <Tooltip id="submitTooltip" place="top" />
           </div>
         </div>
         <div className="time-table-container w-full overflow-x-auto overflow-y-auto flex-grow mb-4">

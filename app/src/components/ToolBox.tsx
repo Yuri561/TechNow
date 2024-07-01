@@ -174,8 +174,8 @@ const ToolBox: React.FC = () => {
                 data-tooltip-id="submitTooltip"
                 data-tooltip-content="Submit Tools"
               />
-              <Tooltip id="addTooltip" place="top" effect="solid" />
-              <Tooltip id="submitTooltip" place="top" effect="solid" />
+              <Tooltip id="addTooltip" place="top"  />
+              <Tooltip id="submitTooltip" place="top" />
             </div>
           </div>
         )}
