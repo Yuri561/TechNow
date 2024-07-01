@@ -19,7 +19,7 @@ const WorkRequest: React.FC = () => {
     setLoading(true);
     try {
       const username = localStorage.getItem('username'); // Adjust based on your implementation
-      const response = await axios.get('http://localhost:5000/workorders', {
+      const response = await axios.get('https://tech-server-mauve.vercel.app/workorders', {
         params: { assignedTo: username }
       });
       setWorkEntries(Array.isArray(response.data) ? response.data : []);
