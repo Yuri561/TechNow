@@ -22,32 +22,33 @@ app.use(workOrderRoutes);
 app.use(videoRoutes);
 app.use(quizRoutes);
 
-// Root Route
-app.get('/', (req, res) => {
-    res.json({ message: 'hello world from server' });
-});
-
 // MongoDB Connection
-const uri = 'mongodb+srv://yui561:Houbenove561%24@cluster0.c3jn9rd.mongodb.net/CompanyDB?retryWrites=true&w=majority&appName=Cluster0';
+const uri =
+	'mongodb+srv://yui561:Houbenove561%24@cluster0.c3jn9rd.mongodb.net/CompanyDB?retryWrites=true&w=majority&appName=Cluster0';
 if (!uri) {
-    console.error('MongoDB URI is not defined in the environment variables');
-    process.exit(1); // Exit the application if URI is not defined
+	console.error('MongoDB URI is not defined in the environment variables');
+	process.exit(1); // Exit the application if URI is not defined
 }
 
-mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-.then(() => {
-    console.log('Connected to MongoDB');
-})
-.catch((err) => {
-    console.error('MongoDB connection error:', err);
-});
+mongoose
+	.connect(uri, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	})
+	.then(() => {
+		console.log('Connected to MongoDB');
+	})
+	.catch((err) => {
+		console.error('MongoDB connection error:', err);
+	});
 
 const PORT = 5000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+	console.log(`Server is running on port ${PORT}`);
 });
+
+app.post('/', (req, res)=>{
+	res.json({message: 'hello world from server'})
+})
 
 module.exports = app;
