@@ -32,7 +32,7 @@ const WorkRequest: React.FC = () => {
   const deleteWorkOrder = async (_id: string) => {
     setLoading(true);
     try {
-      await axios.delete(`http://localhost:5000/workorders/${_id}`);
+      await axios.delete(`https://tech-server-mauve.vercel.app/workorders/${_id}`);
       fetchWorkOrders(); // Refresh the list after deletion
     } catch (error) {
       console.error('Error deleting work order:', error);
