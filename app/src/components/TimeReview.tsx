@@ -28,7 +28,7 @@ const TimeReview: React.FC = () => {
         </h2>
         <div className="user-info text-lg">Welcome, {username}</div>
       </header>
-      <div data-aos="fade-up" className="time-entry-form w-full max-w-7xl bg-gray-800 p-6 rounded flex flex-col items-center flex-grow overflow-hidden">
+      <div data-aos="fade-up" className="time-entry-form w-full max-w-9xl bg-gray-800 p-6 rounded flex flex-col items-center flex-grow overflow-hidden">
         <div className="flex justify-between items-center w-full">
           <h3 className="text-xl font-semibold mb-4">Manage Time Entries</h3>
           <div className="flex space-x-4">

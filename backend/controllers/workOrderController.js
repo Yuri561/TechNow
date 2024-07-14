@@ -45,6 +45,7 @@ const createWorkOrder = async (req, res) => {
 		Location,
 		Notes,
 		PO,
+		Documents,
 	} = req.body;
 	try {
 		const newWorkOrder = new WorkOrderModel({
@@ -59,6 +60,7 @@ const createWorkOrder = async (req, res) => {
 			Location,
 			Notes,
 			PO,
+			Documents,
 		});
 
 		await newWorkOrder.save();

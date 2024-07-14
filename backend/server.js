@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const multer = require('multer'); // Import multer
 require('dotenv').config();
 
 const employeeRoutes = require('./routes/employeeRoute');
@@ -12,9 +13,26 @@ const quizRoutes = require('./routes/quizRoute');
 const app = express();
 
 // Middleware
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(
+	cors({
+		origin: ['http://localhost:5173', 'https://tech-now-plum.vercel.app/'],
+		credentials: true,
+	})
+);
 app.use(express.json());
 app.use(cookieParser());
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, 'uploads/'); // Specify the directory to store the uploaded files
+	},
+	filename: function (req, file, cb) {
+		cb(null, `${Date.now()}-${file.originalname}`); // Use a unique name for the file
+	},
+});
+
+const upload = multer({ storage: storage });
 
 // Routes
 app.use(employeeRoutes);
@@ -22,9 +40,22 @@ app.use(workOrderRoutes);
 app.use(videoRoutes);
 app.use(quizRoutes);
 
+// Route for file upload
+app.post('/upload', upload.single('document'), (req, res) => {
+	if (req.file) {
+		res.status(200).json({
+			message: 'File uploaded successfully',
+			file: req.file,
+		});
+	} else {
+		res.status(400).json({
+			message: 'File not uploaded',
+		});
+	}
+});
+
 // MongoDB Connection
-const uri =
-	'mongodb+srv://yui561:Houbenove561%24@cluster0.c3jn9rd.mongodb.net/CompanyDB?retryWrites=true&w=majority&appName=Cluster0';
+const uri = process.env.MONGODB_URI;
 if (!uri) {
 	console.error('MongoDB URI is not defined in the environment variables');
 	process.exit(1); // Exit the application if URI is not defined
@@ -34,6 +65,7 @@ mongoose
 	.connect(uri, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
+		useFindAndModify: false,
 	})
 	.then(() => {
 		console.log('Connected to MongoDB');

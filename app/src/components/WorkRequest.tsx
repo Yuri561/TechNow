@@ -1,14 +1,22 @@
+// WorkRequest.tsx
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import 'aos/dist/aos.css';
 import AOS from 'aos';
-import Notes from './Notes';
+import NotesModal from './NotesModal'; // Import NotesModal
+import ViewNotesModal from './ViewNotesModal'; // Import ViewNotesModal
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faEye, faNoteSticky } from '@fortawesome/free-solid-svg-icons';
 
 const WorkRequest: React.FC = () => {
   const username = localStorage.getItem('username');
   const [workEntries, setWorkEntries] = useState<{ _id: string, Id: string, Description: string, Type: string, NTE: string, Date: string, AssignedTo: string, Status: string, Priority: string, Location: string, Notes: string, PO: string }[]>([]);
   const [loading, setLoading] = useState(false);
+  const [selectedWorkOrderId, setSelectedWorkOrderId] = useState<string | null>(null);
+  const [selectedNotes, setSelectedNotes] = useState<string>('');
+  const [isNotesModalOpen, setIsNotesModalOpen] = useState(false);
+  const [isViewNotesModalOpen, setIsViewNotesModalOpen] = useState(false);
 
   useEffect(() => {
     AOS.init({ duration: 1000 }); // Initialize AOS animations with a duration of 1000ms
@@ -18,7 +26,6 @@ const WorkRequest: React.FC = () => {
   const fetchWorkOrders = async () => {
     setLoading(true);
     try {
-      const username = localStorage.getItem('username'); // Adjust based on your implementation
       const response = await axios.get('http://localhost:5000/workorders', {
         params: { assignedTo: username }
       });
@@ -38,6 +45,27 @@ const WorkRequest: React.FC = () => {
       console.error('Error deleting work order:', error);
     }
     setLoading(false);
+  };
+
+  const handleEditClick = (workOrderId: string, notes: string) => {
+    setSelectedWorkOrderId(workOrderId);
+    setSelectedNotes(notes);
+    setIsNotesModalOpen(true);
+  };
+
+  const handleViewClick = (notes: string) => {
+    setSelectedNotes(notes);
+    setIsViewNotesModalOpen(true);
+  };
+
+  const handleSaveNotes = async (workOrderId: string, notes: string) => {
+    try {
+      await axios.put(`http://localhost:5000/workorders/${workOrderId}`, { Notes: notes });
+      setIsNotesModalOpen(false);
+      fetchWorkOrders(); // Refresh the list after updating notes
+    } catch (error) {
+      console.error('Error updating notes:', error);
+    }
   };
 
   return (
@@ -72,6 +100,7 @@ const WorkRequest: React.FC = () => {
                   <th className="p-3">Notes</th>
                   <th className="p-3">PO</th>
                   <th className="p-3">Edit</th>
+                  <th className="p-3">View</th>
                   <th className="p-3">Delete</th>
                 </tr>
               </thead>
@@ -87,10 +116,17 @@ const WorkRequest: React.FC = () => {
                     <td className="p-3">{entry.Status}</td>
                     <td className="p-3">{entry.Priority}</td>
                     <td className="p-3">{entry.Location}</td>
-                    <td className="p-3">{entry.Notes}</td>
+                    <td className="p-3 cursor-pointer"><FontAwesomeIcon icon={faNoteSticky} onClick={() => handleViewClick(entry.Notes)}/></td>
                     <td className="p-3">{entry.PO}</td>
                     <td className="p-3">
-                      <button className="button bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700" onClick={() => {<Notes isOpen={true} onClose={() => {}} initialNotes="" onSave={() => {}} /> }}>Edit</button>
+                      <button className="button bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700" onClick={() => handleEditClick(entry._id, entry.Notes)}>
+                        <FontAwesomeIcon icon={faEdit} />
+                      </button>
+                    </td>
+                    <td className="p-3">
+                      <button className="button bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700" onClick={() => handleViewClick(entry.Notes)}>
+                        <FontAwesomeIcon icon={faEye} />
+                      </button>
                     </td>
                     <td className="p-3">
                       <button className="button bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700" onClick={() => deleteWorkOrder(entry._id)}>Delete</button>
@@ -107,6 +143,18 @@ const WorkRequest: React.FC = () => {
           <button className="bg-blue-500 text-white py-1 sm:py-2 px-2 sm:px-4 rounded-lg hover:bg-blue-700 transition duration-300 shadow">Submit Work</button>
         </div>
       </div>
+      <NotesModal
+        isOpen={isNotesModalOpen}
+        onClose={() => setIsNotesModalOpen(false)}
+        initialNotes={selectedNotes}
+        workOrderId={selectedWorkOrderId}
+        onSave={handleSaveNotes}
+      />
+      <ViewNotesModal
+        isOpen={isViewNotesModalOpen}
+        onClose={() => setIsViewNotesModalOpen(false)}
+        notes={selectedNotes}
+      />
     </div>
   );
 };

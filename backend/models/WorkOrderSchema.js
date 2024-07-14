@@ -16,6 +16,7 @@ const WorkOrderSchema = new mongoose.Schema(
 		rtuInformation: { type: String, required: false },
 		maintenanceHistory: { type: String, required: false },
 		PO: { type: Number, required: false },
+		Documents: { type: [String], required: false },
 	},
 	{ timestamps: true }
 
