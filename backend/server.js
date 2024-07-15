@@ -15,7 +15,7 @@ const app = express();
 // Middleware
 app.use(
 	cors({
-		origin: ['http://localhost:5173', 'https://tech-now-plum.vercel.app/'],
+		origin: 'https://tech-now-plum.vercel.app/',
 		credentials: true,
 	})
 );
