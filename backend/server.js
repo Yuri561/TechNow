@@ -32,6 +32,8 @@ app.use(cors({
     credentials: true
 }));
 
+
+
 // Set headers for all responses
 app.use((req, res, next) => {
     const origin = req.header('Origin');
@@ -50,6 +52,10 @@ app.use((req, res, next) => {
 app.options('*', cors())
 app.use(express.json());
 app.use(cookieParser());
+// Root Route
+app.get('/', (req, res) => {
+    res.send({ message: 'hello world from server' });
+});
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
