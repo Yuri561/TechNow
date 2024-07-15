@@ -13,12 +13,41 @@ const quizRoutes = require('./routes/quizRoute');
 const app = express();
 
 // Middleware
-app.use(
-	cors({
-		origin: '*',
-		credentials: true,
-	})
-);
+    'https://tech-now-plum.vercel.app/tool-box',
+    'https://tech-now-plum.vercel.app/new-work-order-form',
+    'https://tech-now-plum.vercel.app/docs-upload',
+    'https://tech-now-plum.vercel.app/generate-receipt'
+   
+];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin) return callback(null, true); // Allow requests with no origin (like mobile apps or curl requests)
+        if (allowedOrigins.indexOf(origin) === -1) {
+            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
+    credentials: true
+}));
+
+// Set headers for all responses
+app.use((req, res, next) => {
+    const origin = req.header('Origin');
+    if (allowedOrigins.includes(origin)) {
+        res.header("Access-Control-Allow-Origin", origin);
+    }
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Credentials", "true");
+    if (req.method === 'OPTIONS') {
+        res.sendStatus(200);
+    } else {
+        next();
+    }
+});
+app.options('*', cors())
 app.use(express.json());
 app.use(cookieParser());
 
