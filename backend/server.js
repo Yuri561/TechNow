@@ -15,7 +15,7 @@ const app = express();
 // Middleware
 app.use(
 	cors({
-		origin: 'https://tech-now-plum.vercel.app/',
+		origin: '*',
 		credentials: true,
 	})
 );
@@ -78,4 +78,4 @@ const PORT = 5000;
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);
 });
-
+module.exports = app;
