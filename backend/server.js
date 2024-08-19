@@ -1,38 +1,39 @@
+// server.js
+
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-const multer = require('multer'); // Import multer
 require('dotenv').config();
 
 const employeeRoutes = require('./routes/employeeRoute');
 const workOrderRoutes = require('./routes/workOrderRoute');
 const videoRoutes = require('./routes/videoRoute');
 const quizRoutes = require('./routes/quizRoute');
+const upload = require('./middleware/multer'); // Import multer configuration
+
+
+
+// checking for our middleware
+if (upload) {
+	console.log(require.resolve('./middleware/multer'));
+
+}
+else {
+	console.log('Multer configuration not found');
+}
 
 const app = express();
 
 // Middleware
 app.use(
 	cors({
-		origin: 'https://tech-now-plum.vercel.app/',
+		origin: 'http://localhost:5173',
 		credentials: true,
 	})
 );
 app.use(express.json());
 app.use(cookieParser());
-
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		cb(null, 'uploads/'); // Specify the directory to store the uploaded files
-	},
-	filename: function (req, file, cb) {
-		cb(null, `${Date.now()}-${file.originalname}`); // Use a unique name for the file
-	},
-});
-
-const upload = multer({ storage: storage });
 
 // Routes
 app.use(employeeRoutes);
@@ -41,7 +42,7 @@ app.use(videoRoutes);
 app.use(quizRoutes);
 
 // Route for file upload
-app.post('/upload', upload.single('document'), (req, res) => {
+app.post('/uploads', upload.single('document'), (req, res) => {
 	if (req.file) {
 		res.status(200).json({
 			message: 'File uploaded successfully',

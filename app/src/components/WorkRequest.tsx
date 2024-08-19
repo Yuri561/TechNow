@@ -23,7 +23,7 @@ const WorkRequest: React.FC = () => {
     fetchWorkOrders();
   }, []);
 
-  const fetchWorkOrders = async () => {
+  async function fetchWorkOrders() {
     setLoading(true);
     try {
       const response = await axios.get('http://localhost:5000/workorders', {
@@ -34,7 +34,7 @@ const WorkRequest: React.FC = () => {
       console.error('Error fetching work orders:', error);
     }
     setLoading(false);
-  };
+  }
 
   const deleteWorkOrder = async (_id: string) => {
     setLoading(true);
@@ -61,6 +61,12 @@ const WorkRequest: React.FC = () => {
   const handleSaveNotes = async (workOrderId: string, notes: string) => {
     try {
       await axios.put(`http://localhost:5000/workorders/${workOrderId}`, { Notes: notes });
+         const localNotes = localStorage.getItem('notes');
+      
+      // Save to localStorage only if necessary or conditionally based on logic
+      if (!localNotes || localNotes !== notes) {
+        localStorage.setItem('notes', notes);
+      }
       setIsNotesModalOpen(false);
       fetchWorkOrders(); // Refresh the list after updating notes
     } catch (error) {

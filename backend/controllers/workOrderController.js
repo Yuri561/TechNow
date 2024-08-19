@@ -110,9 +110,39 @@ const updateWorkOrder = async (req, res) => {
 	}
 };
 
+// uploading DOCUMENTS TO WORK ORDER
+
+const uploadDocument = async (req, res) => {
+	const { workOrderId } = req.params;
+	const filePath = req.file.path; // Path to the uploaded file
+
+	try {
+		// Find the work order by ID and update the Documents field
+		const workOrder = await WorkOrderModel.findByIdAndUpdate(
+			workOrderId,
+			{ $push: { Documents: filePath } }, // Append the file path to the Documents array
+			{ new: true } // Return the updated document
+		);
+
+		if (!workOrder) {
+			return res.status(404).json({ message: 'Work order not found' });
+		}
+
+		res
+			.status(200)
+			.json({ message: 'Document uploaded successfully', workOrder });
+	} catch (error) {
+		console.error('Error uploading document:', error);
+		res
+			.status(500)
+			.json({ error: 'Failed to upload document', details: error.message });
+	}
+};
+
 module.exports = {
 	getWorkOrders,
 	createWorkOrder,
 	updateWorkOrder,
 	deleteWorkOrder,
+	uploadDocument, // new endpoint for uploading documents to a work order
 };

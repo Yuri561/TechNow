@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './styles/RtuBtn.css';
+import RtuInfoModal from './RtuInfoModal';
 
 
 interface WorkOrder {
@@ -20,14 +22,16 @@ interface WorkOrder {
 
 const Equipment: React.FC = () => {
   const username: string = localStorage.getItem('username') || 'Guest';
+  const [isRtuModalOpen, setIsRtuModalOpen] = useState(false);
   const [workOrders, setWorkOrders] = useState<WorkOrder[]>([]);
+
   const [selectedWorkOrder, setSelectedWorkOrder] = useState<WorkOrder | null>(null);
-  const [formState, setFormState] = useState({
-    workPerformed: '',
-    recommendations: '',
-    labor: '',
-    materialUsed: ''
-  });
+  // const [formState, setFormState] = useState({
+  //   workPerformed: '',
+  //   recommendations: '',
+  //   labor: '',
+  //   materialUsed: ''
+  // });
 
   useEffect(() => {
     const fetchWorkOrders = async () => {
@@ -44,21 +48,25 @@ const Equipment: React.FC = () => {
     fetchWorkOrders();
   }, [username]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormState(prevState => ({ ...prevState, [name]: value }));
+  const handleRtuInfoToggle = () => {
+    setIsRtuModalOpen(!isRtuModalOpen);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('Form submitted:', formState);
-    setFormState({
-      workPerformed: '',
-      recommendations: '',
-      labor: '',
-      materialUsed: ''
-    });
-  };
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  //   const { name, value } = e.target;
+  //   setFormState(prevState => ({ ...prevState, [name]: value }));
+  // };
+
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   console.log('Form submitted:', formState);
+  //   setFormState({
+  //     workPerformed: '',
+  //     recommendations: '',
+  //     labor: '',
+  //     materialUsed: ''
+  //   });
+  // };
 
   const handleWorkOrderSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedId = e.target.value;
@@ -69,14 +77,13 @@ const Equipment: React.FC = () => {
 
   return (
     <div
-      
       className="equipment p-8 w-full h-full bg-gray-900 text-white flex flex-col items-center overflow-y-auto"
     >
-      <header className="page-header w-full max-w-5xl mb-6 bg-gray-800 p-4 rounded-2xl flex justify-between items-center shadow-md">
+      <header className="page-header w-full max-w-8xl mb-6 bg-gray-800 p-4 rounded-2xl flex justify-between items-center shadow-md">
         <h2 className="text-2xl font-semibold">Equipment Details</h2>
         <div className="user-info text-lg">Welcome, {username}</div>
       </header>
-      <div className="equipment-content w-full max-w-5xl flex flex-col space-y-6">
+      <div className="equipment-content w-full max-w-8xl flex flex-col space-y-6">
         <div className="bg-gray-800 p-6 rounded-2xl shadow-md">
           <label className="flex flex-col space-y-2">
             <span>Select Work Order:</span>
@@ -97,6 +104,8 @@ const Equipment: React.FC = () => {
               <p className="text-lg">{selectedWorkOrder.Description}</p>
               <h4 className="text-lg font-semibold mt-4">RTU Information</h4>
               <p className="text-lg">{selectedWorkOrder.rtuInformation}</p>
+              <button onClick={handleRtuInfoToggle} className="rtu-info-btn text-white bg-blue-500 p-2 rounded-lg">View RTU Info</button>
+              {isRtuModalOpen && <RtuInfoModal/>}
               <h4 className="text-lg font-semibold mt-4">Maintenance History</h4>
               <ul className="list-disc list-inside">
                 {(selectedWorkOrder.maintenanceHistory || []).map((entry, index) => (
@@ -106,7 +115,9 @@ const Equipment: React.FC = () => {
               <h4 className="text-lg font-semibold mt-4"> Technician Notes</h4>
               <p className="text-lg">{selectedWorkOrder.Notes}</p>
             </div>
-            <div className="bg-gray-800 p-6 rounded-2xl shadow-md">
+
+
+            {/* <div className="bg-gray-800 p-6 rounded-2xl shadow-md">
               <form onSubmit={handleSubmit} className="equipment-form flex flex-col space-y-4">
                 <label className="flex flex-col space-y-2">
                   <span>Work Performed:</span>
@@ -134,7 +145,7 @@ const Equipment: React.FC = () => {
                 </div>
                 <button type="submit" className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-2xl hover:bg-blue-700 transition duration-300 shadow">Submit</button>
               </form>
-            </div>
+            </div> */}
           </>
         )}
       </div>
